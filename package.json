@@ -2,11 +2,14 @@
   "name": "testprojects",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test:ui:smoke": "playwright test tests/ui/smoke --reporter=list",
+    "test:ui:smoke:html": "playwright test tests/ui/smoke --reporter=html"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Playwright + TypeScript E2E framework",
   "devDependencies": {
     "@playwright/test": "^1.58.0",
     "@types/node": "^25.0.10"
