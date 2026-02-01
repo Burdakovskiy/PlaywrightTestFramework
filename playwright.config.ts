@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
+import { ConfigLoader } from './src/config/ConfigLoader';
 
+const cfg = ConfigLoader.load();
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -13,27 +15,34 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests',
+  timeout: cfg.env.timeouts.test,
+  expect: {
+    timeout: cfg.env.timeouts.expect,
+  },
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
+  forbidOnly: cfg.run.forbidOnly ?? true,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: cfg.run.retries ?? 1,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: cfg.run.workers ?? 2,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  grep: cfg.run.grep ? new RegExp(cfg.run.grep) : undefined,
+  reporter: [['list'], ['html', { open: 'never', outputFolder: 'reports/html' }]],
+
   use: {
-    baseURL: 'https://automationexercise.com',
-    headless: true,
+    baseURL: cfg.env.baseUrl,
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
-
+    headless: cfg.env.use?.headless ?? true,
+    actionTimeout: cfg.env.timeouts.action,
+    navigationTimeout: cfg.env.timeouts.navigation,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'retain-on-failure',
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    trace: cfg.env.artifacts.trace,
+    screenshot: cfg.env.artifacts.screenshot,
+    video: cfg.env.artifacts.video,
   },
 
   /* Configure projects for major browsers */

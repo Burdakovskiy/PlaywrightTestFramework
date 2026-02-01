@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test:ui:smoke": "playwright test tests/ui/smoke --reporter=list",
-    "test:ui:smoke:html": "playwright test tests/ui/smoke --reporter=html"
+    "test:stage:ui:smoke": "ENV=stage RUN=ui-smoke playwright test",
+    "test:stage:ui:regression": "ENV=stage RUN=ui-regression playwright test",
+    "test:local:headed": "ENV=local RUN=ui-smoke playwright test --headed",
+    "test:local:debug": "ENV=local RUN=ui-smoke playwright test --debug",
+    "test:all": "playwright test"
   },
   "keywords": [],
   "author": "",

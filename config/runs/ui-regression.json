@@ -1,0 +1,7 @@
+{
+  "name": "ui-regression",
+  "workers": 2,
+  "retries": 1,
+  "grep": "@regression",
+  "forbidOnly": true
+}

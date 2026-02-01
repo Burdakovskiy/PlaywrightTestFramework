@@ -1,5 +1,5 @@
 {
-  "name": "stage",
+  "name": "local",
   "baseUrl": "https://automationexercise.com",
   "timeouts": {
     "test": 60000,
@@ -8,11 +8,11 @@
     "navigation": 30000
   },
   "artifacts": {
-    "trace": "retain-on-failure",
+    "trace": "on",
     "screenshot": "only-on-failure",
-    "video": "retain-on-failure"
+    "video": "off"
   },
   "use": {
-    "headless": true
+    "headless": false
   }
 }

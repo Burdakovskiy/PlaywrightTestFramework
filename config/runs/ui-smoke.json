@@ -1,0 +1,7 @@
+{
+  "name": "ui-smoke",
+  "workers": 1,
+  "retries": 0,
+  "grep": "@smoke",
+  "forbidOnly": true
+}
