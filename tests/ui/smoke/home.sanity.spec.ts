@@ -9,6 +9,6 @@ test('@smoke Home page is visible', async ({ ctx }) => {
   await ctx.page.goto('/');
 
   ctx.logger.info('Verifying home page');
-  await expect(homeLocators.body(ctx.page)).toBeVisible();
-  await expect(homeLocators.signupLoginLink(ctx.page)).toBeVisible();
+  await ctx.waiter.waitVisible(homeLocators.body(ctx.page));
+  await ctx.waiter.waitVisible(homeLocators.signupLoginLink(ctx.page));
 });

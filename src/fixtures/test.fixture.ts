@@ -1,6 +1,8 @@
 import { test as base, expect } from '@playwright/test';
 import { ConfigLoader } from '../config/ConfigLoader';
 import { ConsoleLogger } from '../logging/Logger';
+import { Timeouts } from '../utils/Timeouts';
+import { Waiter } from '../utils/Waiter';
 import type { TestContext } from './types';
 
 type Fixtures = {
@@ -12,12 +14,17 @@ export const test = base.extend<Fixtures>({
     const config = ConfigLoader.load();
     const logger = new ConsoleLogger(testInfo.title);
 
+    const timeouts = Timeouts.from(config);
+    const waiter = new Waiter(page, expect, timeouts);
+
     logger.info('Creating TestContext');
 
     const ctx: TestContext = {
       page,
       config,
       logger,
+      timeouts,
+      waiter,
     };
 
     await use(ctx);
