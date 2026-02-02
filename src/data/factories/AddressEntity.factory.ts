@@ -8,7 +8,7 @@ export class AddressFactoryEntity {
       company: 'QA Labs',
       address1: 'Main Street 1',
       address2: 'Apt 10',
-      country: 'Germany',
+      country: 'India',
       state: 'Bavaria',
       city: 'Munich',
       zipcode: '80331',
