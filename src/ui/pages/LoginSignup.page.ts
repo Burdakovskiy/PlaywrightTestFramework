@@ -23,16 +23,26 @@ export class LoginSignupPage extends BasePage {
     };
   }
 
+  async fillSignupName(name: string): Promise<void> {
+    await this.safeFill(this.signup.nameInput, name, 'Login/Signup: fill signup name');
+  }
+
+  async fillSignupEmail(email: string): Promise<void> {
+    await this.safeFill(this.signup.emailInput, email, 'Login/Signup: fill signup email');
+  }
+
+  async clickSignupSubmit(): Promise<void> {
+    await this.safeClick(this.signup.submitButton, 'Login/Signup: click Signup submit');
+  }
+
   async assertNewUserSignupVisible(): Promise<void> {
     this.logger.info('Login/Signup: assert New User Signup visible');
     await this.waiter.waitVisible(this.signup.newUserTitle);
   }
 
   async startSignup(name: string, email: string): Promise<void> {
-    this.logger.info(`Login/Signup: start signup for "${email}"`);
-
-    await this.safeFill(this.signup.nameInput, name, 'Fill signup name');
-    await this.safeFill(this.signup.emailInput, email, 'Fill signup email');
-    await this.safeClick(this.signup.submitButton, 'Click Signup button');
+    await this.fillSignupName(name);
+    await this.fillSignupEmail(email);
+    await this.clickSignupSubmit();
   }
 }
