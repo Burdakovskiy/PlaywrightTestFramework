@@ -18,6 +18,7 @@ export interface AritfactConfig {
 export interface EnvironmentConfig {
   name: string;
   baseUrl: string;
+  apiBaseUrl?: string;
   timeouts: TimeoutsConfig;
   artifacts: AritfactConfig;
   use?: {
