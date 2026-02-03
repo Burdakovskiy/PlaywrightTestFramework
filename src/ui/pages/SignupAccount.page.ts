@@ -1,113 +1,155 @@
+import type { Locator } from '@playwright/test';
 import type { UserEntity } from '../../domain/UserEntity';
 import type { AddressEntity } from '../../domain/AddressEntity';
 import { BasePage } from '../base/BasePage';
-import { signupAccountLocators } from '../locators/signupAccount.locators';
 
 export class SignupAccountPage extends BasePage {
+  private readonly view: {
+    enterAccountInfoTitle: Locator;
+  };
+
+  private readonly titles: {
+    mr: Locator;
+    mrs: Locator;
+  };
+
+  private readonly account: {
+    name: Locator;
+    email: Locator;
+    password: Locator;
+    day: Locator;
+    month: Locator;
+    year: Locator;
+  };
+
+  private readonly preferences: {
+    newsletter: Locator;
+    offers: Locator;
+  };
+
+  private readonly address: {
+    firstName: Locator;
+    lastName: Locator;
+    company: Locator;
+    address1: Locator;
+    address2: Locator;
+    country: Locator;
+    state: Locator;
+    city: Locator;
+    zipcode: Locator;
+    mobileNumber: Locator;
+  };
+
+  private readonly actions: {
+    createAccount: Locator;
+  };
+
+  constructor(...args: ConstructorParameters<typeof BasePage>) {
+    super(...args);
+
+    this.view = {
+      enterAccountInfoTitle: this.page.getByText('ENTER ACCOUNT INFORMATION', { exact: false }),
+    };
+
+    this.titles = {
+      mr: this.page.locator('#id_gender1'),
+      mrs: this.page.locator('#id_gender2'),
+    };
+
+    this.account = {
+      name: this.page.locator('#name'),
+      email: this.page.locator('#email'),
+      password: this.page.locator('#password'),
+      day: this.page.locator('#days'),
+      month: this.page.locator('#months'),
+      year: this.page.locator('#years'),
+    };
+
+    this.preferences = {
+      newsletter: this.page.locator('#newsletter'),
+      offers: this.page.locator('#optin'),
+    };
+
+    this.address = {
+      firstName: this.page.locator('#first_name'),
+      lastName: this.page.locator('#last_name'),
+      company: this.page.locator('#company'),
+      address1: this.page.locator('#address1'),
+      address2: this.page.locator('#address2'),
+      country: this.page.locator('#country'),
+      state: this.page.locator('#state'),
+      city: this.page.locator('#city'),
+      zipcode: this.page.locator('#zipcode'),
+      mobileNumber: this.page.locator('#mobile_number'),
+    };
+
+    this.actions = {
+      createAccount: this.page.getByRole('button', { name: 'Create Account' }),
+    };
+  }
+
   async assertEnterAccountInfoVisible(): Promise<void> {
     this.logger.info('SignupAccount: assert ENTER ACCOUNT INFORMATION visible');
-    await this.waiter.waitVisible(signupAccountLocators.enterAccountInfoTitle(this.page));
+    await this.waiter.waitVisible(this.view.enterAccountInfoTitle);
   }
 
   async fillAccountInformation(user: UserEntity): Promise<void> {
     this.logger.info('SignupAccount: fill account information');
 
     if (user.title === 'Mrs') {
-      await this.safeClick(signupAccountLocators.titleMrRadio(this.page), 'Select title Mr');
+      await this.safeClick(this.titles.mr, 'Select title Mr');
     } else {
-      await this.safeClick(signupAccountLocators.titleMrsRadio(this.page), 'Select title Mrs');
+      await this.safeClick(this.titles.mrs, 'Select title Mrs');
     }
 
-    await this.waiter.waitVisible(signupAccountLocators.nameInput(this.page));
-    await this.waiter.waitVisible(signupAccountLocators.emailInput(this.page));
+    await this.waiter.waitVisible(this.account.name);
+    await this.waiter.waitVisible(this.account.email);
 
-    await this.safeFill(
-      signupAccountLocators.passwordInput(this.page),
-      user.password,
-      'Fill password',
-    );
+    await this.safeFill(this.account.password, user.password, 'Fill password');
 
-    await signupAccountLocators.daySelect(this.page).selectOption({ label: user.dateOfBirth.day });
-    await signupAccountLocators
-      .monthSelect(this.page)
-      .selectOption({ label: user.dateOfBirth.month });
-    await signupAccountLocators
-      .yearSelect(this.page)
-      .selectOption({ label: user.dateOfBirth.year });
-
-    const newsletter = signupAccountLocators.newsletterCheckbox(this.page);
-    const offers = signupAccountLocators.offersCheckbox(this.page);
+    await this.account.day.selectOption({ label: user.dateOfBirth.day });
+    await this.account.month.selectOption({ label: user.dateOfBirth.month });
+    await this.account.year.selectOption({ label: user.dateOfBirth.year });
 
     if (user.newsletter) {
-      await newsletter.check();
+      await this.preferences.newsletter.check();
     } else {
-      await newsletter.uncheck();
+      await this.preferences.newsletter.uncheck();
     }
 
     if (user.specialOffers) {
-      await offers.check();
+      await this.preferences.offers.check();
     } else {
-      await offers.uncheck();
+      await this.preferences.offers.uncheck();
     }
   }
 
   async fillAddressInformation(address: AddressEntity): Promise<void> {
     this.logger.info('SignupAccount: fill address information');
 
-    await this.safeFill(
-      signupAccountLocators.firstNameInput(this.page),
-      address.firstName,
-      'Fill first name',
-    );
-    await this.safeFill(
-      signupAccountLocators.lastNameInput(this.page),
-      address.lastName,
-      'Fill last name',
-    );
+    await this.safeFill(this.address.firstName, address.firstName, 'Fill first name');
+    await this.safeFill(this.address.lastName, address.lastName, 'Fill last name');
 
     if (address.company) {
-      await this.safeFill(
-        signupAccountLocators.companyInput(this.page),
-        address.company,
-        'Fill company',
-      );
+      await this.safeFill(this.address.company, address.company, 'Fill company');
     }
 
-    await this.safeFill(
-      signupAccountLocators.address1Input(this.page),
-      address.address1,
-      'Fill address1',
-    );
+    await this.safeFill(this.address.address1, address.address1, 'Fill address1');
 
     if (address.address2) {
-      await this.safeFill(
-        signupAccountLocators.address2Input(this.page),
-        address.address2,
-        'Fill address2',
-      );
+      await this.safeFill(this.address.address2, address.address2, 'Fill address2');
     }
 
-    await signupAccountLocators.countrySelect(this.page).selectOption({ label: address.country });
+    await this.address.country.selectOption({ label: address.country });
 
-    await this.safeFill(signupAccountLocators.stateInput(this.page), address.state, 'Fill state');
-    await this.safeFill(signupAccountLocators.cityInput(this.page), address.city, 'Fill city');
-    await this.safeFill(
-      signupAccountLocators.zipcodeInput(this.page),
-      address.zipcode,
-      'Fill zipcode',
-    );
-    await this.safeFill(
-      signupAccountLocators.mobileNumberInput(this.page),
-      address.mobileNumber,
-      'Fill mobile number',
-    );
+    await this.safeFill(this.address.state, address.state, 'Fill state');
+    await this.safeFill(this.address.city, address.city, 'Fill city');
+    await this.safeFill(this.address.zipcode, address.zipcode, 'Fill zipcode');
+    await this.safeFill(this.address.mobileNumber, address.mobileNumber, 'Fill mobile number');
   }
 
   async submitCreateAccount(): Promise<void> {
     this.logger.info('SignupAccount: submit Create Account');
-    await this.safeClick(
-      signupAccountLocators.createAccountButton(this.page),
-      'Click Create Account',
-    );
+    await this.safeClick(this.actions.createAccount, 'Click Create Account');
   }
 }

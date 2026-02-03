@@ -8,7 +8,7 @@ export class DeleteAccountFlow {
     const deleted = new AccountDeletedPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
 
     ctx.logger.info('FLOW: Click Delete Account');
-    await home.header().clickDeleteAccount();
+    await home.goToAccountDeletion();
 
     ctx.logger.info('FLOW: Verify Account Deleted + Continue');
     await deleted.assertAccountDeletedVisible();
