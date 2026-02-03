@@ -20,14 +20,9 @@ export class RegisterUserFlow {
     await home.goToLoginSignup();
     await login.assertNewUserSignupVisible();
 
-    ctx.logger.info('FLOW: Submit name/email');
+    ctx.logger.info('FLOW: Fill in user info and submit account creation');
     await login.startSignup(user.name, user.email);
-    await signup.assertEnterAccountInfoVisible();
-
-    ctx.logger.info('FLOW: Fill account + address info');
-    await signup.fillAccountInformation(user);
-    await signup.fillAddressInformation(user.address);
-    await signup.submitCreateAccount();
+    await signup.completeSignup(user, user.address);
 
     ctx.logger.info('FLOW: Verify created + continue + logged in');
     await created.assertAccountCreatedVisible();

@@ -91,15 +91,15 @@ export class SignupAccountPage extends BasePage {
     };
   }
 
-  async assertEnterAccountInfoVisible(): Promise<void> {
+  private async assertEnterAccountInfoVisible(): Promise<void> {
     this.logger.info('SignupAccount: assert ENTER ACCOUNT INFORMATION visible');
     await this.waiter.waitVisible(this.view.enterAccountInfoTitle);
   }
 
-  async fillAccountInformation(user: UserEntity): Promise<void> {
+  private async fillAccountInformation(user: UserEntity): Promise<void> {
     this.logger.info('SignupAccount: fill account information');
 
-    if (user.title === 'Mrs') {
+    if (user.title === 'Mr') {
       await this.safeClick(this.titles.mr, 'Select title Mr');
     } else {
       await this.safeClick(this.titles.mrs, 'Select title Mrs');
@@ -127,7 +127,7 @@ export class SignupAccountPage extends BasePage {
     }
   }
 
-  async fillAddressInformation(address: AddressEntity): Promise<void> {
+  private async fillAddressInformation(address: AddressEntity): Promise<void> {
     this.logger.info('SignupAccount: fill address information');
 
     await this.safeFill(this.address.firstName, address.firstName, 'Fill first name');
@@ -151,8 +151,15 @@ export class SignupAccountPage extends BasePage {
     await this.safeFill(this.address.mobileNumber, address.mobileNumber, 'Fill mobile number');
   }
 
-  async submitCreateAccount(): Promise<void> {
+  private async submitCreateAccount(): Promise<void> {
     this.logger.info('SignupAccount: submit Create Account');
     await this.safeClick(this.actions.createAccount, 'Click Create Account');
+  }
+
+  async completeSignup(user: UserEntity, address: AddressEntity): Promise<void> {
+    await this.assertEnterAccountInfoVisible();
+    await this.fillAccountInformation(user);
+    await this.fillAddressInformation(address);
+    await this.submitCreateAccount();
   }
 }
