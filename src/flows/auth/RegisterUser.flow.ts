@@ -17,7 +17,7 @@ export class RegisterUserFlow {
     await home.assertVisible();
 
     ctx.logger.info('FLOW: Go to Signup/Login & verify block');
-    await home.header().clickSignupLogin();
+    await home.goToLoginSignup();
     await login.assertNewUserSignupVisible();
 
     ctx.logger.info('FLOW: Submit name/email');
@@ -31,7 +31,7 @@ export class RegisterUserFlow {
 
     ctx.logger.info('FLOW: Verify created + continue + logged in');
     await created.assertAccountCreatedVisible();
-    await created.continue();
-    await home.header().assertLoggedInAs(user.name);
+    await created.continueToHome();
+    await home.assertLoggedInAs(user.name);
   }
 }
