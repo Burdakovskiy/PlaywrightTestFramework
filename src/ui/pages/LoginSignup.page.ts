@@ -1,5 +1,8 @@
+import type { Locator, Page } from '@playwright/test';
+import type { LoadedConfig } from '../../config/types';
+import type { Logger } from '../../logging/Logger';
+import type { Waiter } from '../../utils/Waiter';
 import { BasePage } from '../base/BasePage';
-import type { Locator } from '@playwright/test';
 
 export class LoginSignupPage extends BasePage {
   private readonly signup: {
@@ -9,8 +12,8 @@ export class LoginSignupPage extends BasePage {
     submitButton: Locator;
   };
 
-  constructor(...args: ConstructorParameters<typeof BasePage>) {
-    super(...args);
+  constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
+    super(page, config, waiter, logger);
 
     this.signup = {
       newUserTitle: this.page.getByText('New User Signup!', { exact: true }),

@@ -1,4 +1,7 @@
-import type { Locator } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
+import type { LoadedConfig } from '../../config/types';
+import type { Logger } from '../../logging/Logger';
+import type { Waiter } from '../../utils/Waiter';
 import { BasePage } from '../base/BasePage';
 import { HeaderComponent } from '../components/Header.component';
 
@@ -9,8 +12,8 @@ export class HomePage extends BasePage {
     body: Locator;
   };
 
-  constructor(...args: ConstructorParameters<typeof BasePage>) {
-    super(...args);
+  constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
+    super(page, config, waiter, logger);
 
     this.header = new HeaderComponent(this.page, this.config, this.waiter, this.logger);
     this.view = {

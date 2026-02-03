@@ -11,20 +11,24 @@ export abstract class BasePage {
     protected readonly logger: Logger,
   ) {}
 
-  async open(path: string): Promise<void> {
+  protected async open(path: string): Promise<void> {
     this.logger.info(`Open: ${path}`);
     await this.page.goto(path);
     await this.waiter.waitPageReady();
     await this.dismissConsentIfPresent();
   }
 
-  async safeClick(locator: Locator, description: string = 'click'): Promise<void> {
+  protected async safeClick(locator: Locator, description: string = 'click'): Promise<void> {
     this.logger.info(`Action: ${description}`);
     await this.waiter.waitVisible(locator);
     await locator.click();
   }
 
-  async safeFill(locator: Locator, value: string, description: string = 'fill'): Promise<void> {
+  protected async safeFill(
+    locator: Locator,
+    value: string,
+    description: string = 'fill',
+  ): Promise<void> {
     this.logger.info(`Action: ${description} = "${value}"`);
     await this.waiter.waitVisible(locator);
     await locator.fill(value);

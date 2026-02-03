@@ -1,4 +1,7 @@
-import type { Locator } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
+import type { LoadedConfig } from '../../config/types';
+import type { Logger } from '../../logging/Logger';
+import type { Waiter } from '../../utils/Waiter';
 import type { UserEntity } from '../../domain/UserEntity';
 import type { AddressEntity } from '../../domain/AddressEntity';
 import { BasePage } from '../base/BasePage';
@@ -44,8 +47,8 @@ export class SignupAccountPage extends BasePage {
     createAccount: Locator;
   };
 
-  constructor(...args: ConstructorParameters<typeof BasePage>) {
-    super(...args);
+  constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
+    super(page, config, waiter, logger);
 
     this.view = {
       enterAccountInfoTitle: this.page.getByText('ENTER ACCOUNT INFORMATION', { exact: false }),

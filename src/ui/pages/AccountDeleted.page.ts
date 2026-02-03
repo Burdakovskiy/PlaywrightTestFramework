@@ -1,4 +1,7 @@
-import type { Locator } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
+import type { LoadedConfig } from '../../config/types';
+import type { Logger } from '../../logging/Logger';
+import type { Waiter } from '../../utils/Waiter';
 import { BasePage } from '../base/BasePage';
 
 export class AccountDeletedPage extends BasePage {
@@ -10,8 +13,8 @@ export class AccountDeletedPage extends BasePage {
     continue: Locator;
   };
 
-  constructor(...args: ConstructorParameters<typeof BasePage>) {
-    super(...args);
+  constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
+    super(page, config, waiter, logger);
 
     this.view = {
       title: this.page.getByRole('heading', { name: /account deleted!/i }),
