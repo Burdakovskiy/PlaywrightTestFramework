@@ -6,7 +6,7 @@ import { HomePage } from '../../../src/ui/pages/Home.page';
 import { LoginSignupPage } from '../../../src/ui/pages/LoginSignup.page';
 import { DeleteAccountFlow } from '../../../src/flows/auth/DeleteAccount.flow';
 
-test.describe('@negative login with incorrect email and password', async () => {
+test.describe('@negative login with incorrect email and password', () => {
   test('@negative login with incorrect email', async ({ ctx }) => {
     const home = new HomePage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
     const login = new LoginSignupPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
