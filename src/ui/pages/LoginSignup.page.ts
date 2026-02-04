@@ -19,6 +19,8 @@ export class LoginSignupPage extends BasePage {
     loginButton: Locator;
   };
 
+  private readonly loginError: Locator;
+
   constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
     super(page, config, waiter, logger);
 
@@ -35,6 +37,7 @@ export class LoginSignupPage extends BasePage {
       passwordInput: this.page.getByPlaceholder('Password'),
       loginButton: this.page.getByRole('button', { name: 'Login' }),
     };
+    this.loginError = this.page.getByText('Your email or password is incorrect!', { exact: true });
   }
 
   async fillSignupName(name: string): Promise<void> {
@@ -81,5 +84,13 @@ export class LoginSignupPage extends BasePage {
     await this.fillLoginEmail(email);
     await this.fillLoginPassword(password);
     await this.clickLoginSubmit();
+  }
+
+  async assertLoginErrorVisible(expectedText?: string): Promise<void> {
+    if (expectedText) {
+      await this.waiter.waitVisible(this.page.getByText(expectedText, { exact: true }));
+      return;
+    }
+    await this.waiter.waitVisible(this.loginError);
   }
 }

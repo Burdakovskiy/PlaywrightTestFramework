@@ -54,4 +54,8 @@ export class HomePage extends BasePage {
   async assertLogoutVisible(): Promise<void> {
     await this.header.logoutVisible();
   }
+
+  async assertNotLoggedIn(): Promise<void> {
+    await this.header.assertNotLoggedIn();
+  }
 }

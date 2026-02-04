@@ -5,7 +5,7 @@ import type { Waiter } from '../../utils/Waiter';
 import { BaseComponent } from '../base/BaseComponent';
 
 export class HeaderComponent extends BaseComponent {
-  private readonly nav: {
+  protected readonly nav: {
     signupLoginLink: Locator;
     loggedInAsText: Locator;
     deleteAccountLink: Locator;
@@ -48,5 +48,14 @@ export class HeaderComponent extends BaseComponent {
 
   async logoutVisible(): Promise<void> {
     await this.waiter.waitVisible(this.nav.logoutLink);
+  }
+
+  async assertLoggedInAsVisible(): Promise<void> {
+    await this.waiter.waitVisible(this.nav.loggedInAsText);
+  }
+
+  async assertNotLoggedIn(): Promise<void> {
+    await this.waiter.waitHidden(this.nav.loggedInAsText);
+    await this.waiter.waitHidden(this.nav.deleteAccountLink);
   }
 }
