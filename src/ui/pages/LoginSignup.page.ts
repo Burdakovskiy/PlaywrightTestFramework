@@ -34,7 +34,7 @@ export class LoginSignupPage extends BasePage {
     this.login = {
       loginTitle: this.page.getByText('Login to your account', { exact: true }),
       emailInput: this.page.locator('form[action="/login"] input[data-qa="login-email"]'),
-      passwordInput: this.page.getByPlaceholder('Password'),
+      passwordInput: this.page.locator('form[action="/login"] input[data-qa="login-password"]'),
       loginButton: this.page.getByRole('button', { name: 'Login' }),
     };
     this.loginError = this.page.getByText('Your email or password is incorrect!', { exact: true });
@@ -62,6 +62,13 @@ export class LoginSignupPage extends BasePage {
 
   async clickLoginSubmit(): Promise<void> {
     await this.safeClick(this.login.loginButton, 'Login: click Login submit');
+  }
+
+  async assertLoginPageVisible(): Promise<void> {
+    this.logger.info('Login: Page is presented');
+    await this.waiter.waitUrl(/\/login/);
+    await this.assertNewUserSignupVisible();
+    await this.assertLoginToYourAccountVisible();
   }
 
   async assertNewUserSignupVisible(): Promise<void> {
