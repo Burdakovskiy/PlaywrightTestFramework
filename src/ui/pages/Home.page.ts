@@ -45,4 +45,13 @@ export class HomePage extends BasePage {
     this.logger.info('Home: go to account deletion');
     await this.header.clickDeleteAccount();
   }
+
+  async logout(): Promise<void> {
+    this.logger.info('Home: go to logout from account');
+    await this.header.clickLogout();
+  }
+
+  async assertLogoutVisible(): Promise<void> {
+    await this.header.logoutVisible();
+  }
 }
