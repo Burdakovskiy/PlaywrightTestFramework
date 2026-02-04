@@ -1,0 +1,6 @@
+{
+  "name": "all",
+  "workers": 2,
+  "retries": 0,
+  "forbidOnly": true
+}
