@@ -3,7 +3,7 @@ import { UserEntityFactory } from '../../../src/data/factories/UserEntity.factor
 import { RegisterUserFlow } from '../../../src/flows/auth/RegisterUser.flow';
 import { DeleteAccountFlow } from '../../../src/flows/auth/DeleteAccount.flow';
 
-test('@smoke Register and delete user)', async ({ ctx }) => {
+test('@smoke Register and delete user', async ({ ctx }) => {
   const user = UserEntityFactory.createUniqueUser();
 
   await RegisterUserFlow.run(ctx, user);

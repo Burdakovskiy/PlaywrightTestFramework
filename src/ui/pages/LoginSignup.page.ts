@@ -10,6 +10,7 @@ export class LoginSignupPage extends BasePage {
     nameInput: Locator;
     emailInput: Locator;
     submitButton: Locator;
+    emailExistError: Locator;
   };
 
   private readonly login: {
@@ -17,9 +18,8 @@ export class LoginSignupPage extends BasePage {
     emailInput: Locator;
     passwordInput: Locator;
     loginButton: Locator;
+    loginError: Locator;
   };
-
-  private readonly loginError: Locator;
 
   constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
     super(page, config, waiter, logger);
@@ -29,6 +29,9 @@ export class LoginSignupPage extends BasePage {
       nameInput: this.page.getByPlaceholder('Name'),
       emailInput: this.page.locator('form[action="/signup"] input[data-qa="signup-email"]'),
       submitButton: this.page.getByRole('button', { name: 'Signup' }),
+      emailExistError: this.page
+        .locator('form[action="/signup"]')
+        .getByText('Email Address already exist!', { exact: true }),
     };
 
     this.login = {
@@ -36,8 +39,8 @@ export class LoginSignupPage extends BasePage {
       emailInput: this.page.locator('form[action="/login"] input[data-qa="login-email"]'),
       passwordInput: this.page.locator('form[action="/login"] input[data-qa="login-password"]'),
       loginButton: this.page.getByRole('button', { name: 'Login' }),
+      loginError: this.page.getByText('Your email or password is incorrect!', { exact: true }),
     };
-    this.loginError = this.page.getByText('Your email or password is incorrect!', { exact: true });
   }
 
   async fillSignupName(name: string): Promise<void> {
@@ -98,6 +101,10 @@ export class LoginSignupPage extends BasePage {
       await this.waiter.waitVisible(this.page.getByText(expectedText, { exact: true }));
       return;
     }
-    await this.waiter.waitVisible(this.loginError);
+    await this.waiter.waitVisible(this.login.loginError);
+  }
+
+  async assertEmailAddressAlreadyExistVisible(): Promise<void> {
+    await this.waiter.waitVisible(this.signup.emailExistError);
   }
 }
