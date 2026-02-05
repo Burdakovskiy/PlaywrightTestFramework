@@ -10,6 +10,7 @@ export class HeaderComponent extends BaseComponent {
     loggedInAsText: Locator;
     deleteAccountLink: Locator;
     logoutLink: Locator;
+    contactUsLink: Locator;
   };
 
   constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
@@ -19,11 +20,16 @@ export class HeaderComponent extends BaseComponent {
       loggedInAsText: this.page.getByText('Logged in as', { exact: false }),
       deleteAccountLink: this.page.getByRole('link', { name: 'Delete Account' }),
       logoutLink: this.page.getByRole('link', { name: 'Logout' }),
+      contactUsLink: this.page.getByRole('link', { name: 'Contact us' }),
     };
   }
 
   async clickSignupLogin(): Promise<void> {
     await this.safeClick(this.nav.signupLoginLink, 'Header: click Signup / Login');
+  }
+
+  async clickContactUs(): Promise<void> {
+    await this.safeClick(this.nav.contactUsLink, 'Header: click Contact us');
   }
 
   async assertLoggedInAs(expectedName: string): Promise<void> {

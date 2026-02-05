@@ -1,12 +1,12 @@
 import type { UserEntity } from '../../domain/UserEntity';
 import type { AddressEntity } from '../../domain/AddressEntity';
-import { UserEntityFactory } from '../factories/UserEntity.factory';
+import { UserDataFactory } from '../factories/UserData.factory';
 
 export class UserEntityBuilder {
   private user: UserEntity;
 
   constructor() {
-    this.user = UserEntityFactory.createUniqueUser();
+    this.user = UserDataFactory.createUniqueUser();
   }
 
   static create(): UserEntityBuilder {

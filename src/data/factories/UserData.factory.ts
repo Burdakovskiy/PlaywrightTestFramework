@@ -1,8 +1,8 @@
 import type { UserEntity } from '../../domain/UserEntity';
 import { Unique } from '../../utils/Unique';
-import { AddressFactoryEntity } from './AddressEntity.factory';
+import { AddressDataFactory } from './AddressData.factory';
 
-export class UserEntityFactory {
+export class UserDataFactory {
   static createUniqueUser(overrides?: Partial<UserEntity>): UserEntity {
     const base: UserEntity = {
       name: 'Dmitriy',
@@ -19,7 +19,7 @@ export class UserEntityFactory {
       newsletter: true,
       specialOffers: true,
 
-      address: AddressFactoryEntity.default(),
+      address: AddressDataFactory.default(),
     };
 
     return {

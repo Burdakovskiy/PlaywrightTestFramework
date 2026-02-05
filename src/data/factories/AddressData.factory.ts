@@ -1,6 +1,6 @@
 import type { AddressEntity } from '../../domain/AddressEntity';
 
-export class AddressFactoryEntity {
+export class AddressDataFactory {
   static default(): AddressEntity {
     return {
       firstName: 'Dmitriy',

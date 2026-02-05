@@ -1,5 +1,5 @@
 import { test } from '../../../src/fixtures/test.fixture';
-import { UserEntityFactory } from '../../../src/data/factories/UserEntity.factory';
+import { UserDataFactory } from '../../../src/data/factories/UserData.factory';
 import { RegisterUserFlow } from '../../../src/flows/auth/RegisterUser.flow';
 import { LogoutFlow } from '../../../src/flows/auth/Logout.flow';
 import { HomePage } from '../../../src/ui/pages/Home.page';
@@ -22,7 +22,7 @@ test.describe('@negative login with incorrect email and password', () => {
   });
 
   test('@negative login with incorrect password', async ({ ctx }) => {
-    const user = UserEntityFactory.createUniqueUser();
+    const user = UserDataFactory.createUniqueUser();
 
     await RegisterUserFlow.run(ctx, user);
     await LogoutFlow.run(ctx);

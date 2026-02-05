@@ -15,7 +15,7 @@ export class HomePage extends BasePage {
   constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
     super(page, config, waiter, logger);
 
-    this.header = new HeaderComponent(this.page, this.config, this.waiter, this.logger);
+    this.header = new HeaderComponent(page, config, waiter, logger);
     this.view = {
       body: this.page.locator('body'),
     };
@@ -25,15 +25,20 @@ export class HomePage extends BasePage {
     await this.open('/');
   }
 
+  async goToLoginSignup(): Promise<void> {
+    this.logger.info('Home: go to Login/Signup');
+    await this.header.clickSignupLogin();
+  }
+
+  async goToContuctUs(): Promise<void> {
+    this.logger.info('Home: go to ContactUs');
+    await this.header.clickContactUs();
+  }
+
   async assertVisible(): Promise<void> {
     this.logger.info('Home: assert visible');
     await this.waiter.waitVisible(this.view.body);
     await this.header.assertSignupLoginVisible();
-  }
-
-  async goToLoginSignup(): Promise<void> {
-    this.logger.info('Home: go to Login/Signup');
-    await this.header.clickSignupLogin();
   }
 
   async assertLoggedInAs(expectedName: string): Promise<void> {
