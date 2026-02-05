@@ -20,7 +20,9 @@ export class ContactUsFlow {
     await contactUs.fillInInfo(data);
     await contactUs.pressSubmit();
 
-    ctx.logger.info('ContactUsFlow: Check success screen');
+    ctx.logger.info('ContactUsFlow: Check success screen and go to home');
     await contactUs.assertSuccessMessageVisible();
+    await contactUs.pressToHome();
+    await home.assertVisible();
   }
 }

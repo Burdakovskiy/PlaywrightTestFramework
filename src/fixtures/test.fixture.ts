@@ -17,6 +17,10 @@ export const test = base.extend<Fixtures>({
     const timeouts = Timeouts.from(config);
     const waiter = new Waiter(page, expect, timeouts);
 
+    await page.addInitScript(() => {
+      window.confirm = () => true;
+    });
+
     logger.info('Creating TestContext');
 
     const ctx: TestContext = {

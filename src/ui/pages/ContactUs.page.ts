@@ -24,6 +24,7 @@ export class ContactUsPage extends BasePage {
 
   private readonly success: {
     successMessage: Locator;
+    homeButton: Locator;
   };
 
   constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
@@ -40,13 +41,14 @@ export class ContactUsPage extends BasePage {
       subjectInput: this.formRoot.locator('input[data-qa="subject"]'),
       messageInput: this.formRoot.locator('textarea[data-qa="message"]'),
       uploadFileInput: this.formRoot.locator('input[type="file"]'),
-      submitButton: this.formRoot.getByRole('button', { name: 'Submit' }),
+      submitButton: this.formRoot.locator('input[data-qa="submit-button"]'),
     };
 
     this.success = {
       successMessage: this.page
         .locator('#contact-page .status.alert.alert-success')
         .filter({ hasText: 'Success! Your details have been submitted successfully.' }),
+      homeButton: this.page.locator('#contact-page .btn.btn-success'),
     };
   }
 
@@ -86,11 +88,11 @@ export class ContactUsPage extends BasePage {
   }
 
   async pressSubmit(): Promise<void> {
-    this.page.once('dialog', async (dialog) => {
-      this.logger.info(`Dialog: ${dialog.type()} | ${dialog.message()}`);
-      await dialog.accept();
-    });
-    await this.safeClick(this.formLocators.submitButton, 'Contact Us: click submit');
+    await this.waiter.waitVisible(this.formLocators.submitButton);
+  }
+
+  async pressToHome(): Promise<void> {
+    await this.safeClick(this.success.homeButton);
   }
 
   async assertSuccessMessageVisible(): Promise<void> {
