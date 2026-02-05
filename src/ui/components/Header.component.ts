@@ -11,6 +11,7 @@ export class HeaderComponent extends BaseComponent {
     deleteAccountLink: Locator;
     logoutLink: Locator;
     contactUsLink: Locator;
+    productsLink: Locator;
   };
 
   constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
@@ -21,6 +22,7 @@ export class HeaderComponent extends BaseComponent {
       deleteAccountLink: this.page.getByRole('link', { name: 'Delete Account' }),
       logoutLink: this.page.getByRole('link', { name: 'Logout' }),
       contactUsLink: this.page.getByRole('link', { name: 'Contact us' }),
+      productsLink: this.page.getByRole('link', { name: 'products' }),
     };
   }
 
@@ -30,6 +32,10 @@ export class HeaderComponent extends BaseComponent {
 
   async clickContactUs(): Promise<void> {
     await this.safeClick(this.nav.contactUsLink, 'Header: click Contact us');
+  }
+
+  async clickProducts(): Promise<void> {
+    await this.safeClick(this.nav.productsLink, 'Header: click Products');
   }
 
   async assertLoggedInAs(expectedName: string): Promise<void> {

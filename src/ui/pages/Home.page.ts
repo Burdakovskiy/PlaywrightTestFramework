@@ -35,6 +35,11 @@ export class HomePage extends BasePage {
     await this.header.clickContactUs();
   }
 
+  async goToProducts(): Promise<void> {
+    this.logger.info('Home: go to Products');
+    await this.header.clickProducts();
+  }
+
   async assertVisible(): Promise<void> {
     this.logger.info('Home: assert visible');
     await this.waiter.waitVisible(this.view.body);
