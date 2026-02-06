@@ -1,30 +1,29 @@
 import type { TestContext } from '../../fixtures/types';
 import { ProductsPage } from '../../../src/ui/pages/Products.page';
-import { ProductDetailsPage } from '../../../src/ui/pages/ProductDetails.page';
 import { HeaderComponent } from '../../../src/ui/components/Header.component';
+import { CartPage } from '../../../src/ui/pages/Cart.page';
 import { HomePage } from '../../ui/pages/Home.page';
 
-export class CheckProductDetails {
+export class AddProductToCartFlow {
   static async run(ctx: TestContext): Promise<void> {
     const header = new HeaderComponent(ctx.page, ctx.config, ctx.waiter, ctx.logger);
     const home = new HomePage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
     const products = new ProductsPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
-    const details = new ProductDetailsPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
 
-    ctx.logger.info('TEST: Open Home & verify visible');
+    ctx.logger.info('AddProductToCartFlow: Open Home & verify visible');
     await header.goToHome();
     await home.assertVisible();
 
-    ctx.logger.info('TEST: Navigate to Products page and verify visibility');
+    ctx.logger.info('AddProductToCartFlow: Navigate to Products page and verify visibility');
     await header.goToProducts();
     await products.assertProductsPageVisible();
 
-    ctx.logger.info('TEST: Verify product exist and click view product button');
-    await products.assertProductExist();
-    await products.clickViewProductDetails();
-    await details.assertProductDetailPageVisible();
+    ctx.logger.info('AddProductToCartFlow: Add products to cart and proceed to cart');
+    const productsCountToAddToCart = 2;
+    const cart = await products.addProductsAndProceedToCart(productsCountToAddToCart);
 
-    ctx.logger.info('TEST: Verify product details elements');
-    await details.assertDetailsElementsExist();
+    ctx.logger.info('AddProductToCartFlow: Verify cart visibility');
+    cart.assertCartPageVisible();
+    cart.assertProductsPresent(productsCountToAddToCart);
   }
 }

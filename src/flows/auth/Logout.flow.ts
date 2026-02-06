@@ -1,12 +1,12 @@
 import type { TestContext } from '../../fixtures/types';
-import { HomePage } from '../../ui/pages/Home.page';
+import { HeaderComponent } from '../../../src/ui/components/Header.component';
 
 export class LogoutFlow {
   static async run(ctx: TestContext): Promise<void> {
-    const home = new HomePage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
+    const header = new HeaderComponent(ctx.page, ctx.config, ctx.waiter, ctx.logger);
 
     ctx.logger.info('FLOW: Logout');
-    home.assertLogoutVisible();
-    home.logout();
+    header.assertLogoutVisible();
+    header.logout();
   }
 }

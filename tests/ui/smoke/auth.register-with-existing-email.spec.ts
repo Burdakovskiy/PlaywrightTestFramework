@@ -6,19 +6,21 @@ import { LogoutFlow } from '../../../src/flows/auth/Logout.flow';
 import { HomePage } from '../../../src/ui/pages/Home.page';
 import { LoginSignupPage } from '../../../src/ui/pages/LoginSignup.page';
 import { LoginUserFlow } from '../../../src/flows/auth/LoginUser.flow';
+import { HeaderComponent } from '../../../src/ui/components/Header.component';
 
 test('@negative Register user with existing email', async ({ ctx }) => {
   const user = UserDataFactory.createUniqueUser();
   const home = new HomePage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
+  const header = new HeaderComponent(ctx.page, ctx.config, ctx.waiter, ctx.logger);
   const login = new LoginSignupPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
 
   await RegisterUserFlow.run(ctx, user);
   await LogoutFlow.run(ctx);
 
-  await home.openHome();
+  await header.goToHome();
   await home.assertVisible();
 
-  await home.goToLoginSignup();
+  await header.goToSignupLogin();
   await login.assertNewUserSignupVisible();
 
   await login.startSignup(user.name, user.email);

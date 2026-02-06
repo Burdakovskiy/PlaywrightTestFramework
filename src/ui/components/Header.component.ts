@@ -3,6 +3,7 @@ import type { LoadedConfig } from '../../config/types';
 import type { Logger } from '../../logging/Logger';
 import type { Waiter } from '../../utils/Waiter';
 import { BaseComponent } from '../base/BaseComponent';
+import { ROUTES } from '../../config/routes';
 
 export class HeaderComponent extends BaseComponent {
   protected readonly nav: {
@@ -26,15 +27,19 @@ export class HeaderComponent extends BaseComponent {
     };
   }
 
-  async clickSignupLogin(): Promise<void> {
+  async goToHome(): Promise<void> {
+    await this.open(ROUTES.home);
+  }
+
+  async goToSignupLogin(): Promise<void> {
     await this.safeClick(this.nav.signupLoginLink, 'Header: click Signup / Login');
   }
 
-  async clickContactUs(): Promise<void> {
+  async goToContactUs(): Promise<void> {
     await this.safeClick(this.nav.contactUsLink, 'Header: click Contact us');
   }
 
-  async clickProducts(): Promise<void> {
+  async goToProducts(): Promise<void> {
     await this.safeClick(this.nav.productsLink, 'Header: click Products');
   }
 
@@ -46,7 +51,7 @@ export class HeaderComponent extends BaseComponent {
     );
   }
 
-  async clickDeleteAccount(): Promise<void> {
+  async goToAccountDeletion(): Promise<void> {
     await this.safeClick(this.nav.deleteAccountLink, 'Header: click Delete Account');
   }
 
@@ -54,11 +59,11 @@ export class HeaderComponent extends BaseComponent {
     await this.waiter.waitVisible(this.nav.signupLoginLink);
   }
 
-  async clickLogout(): Promise<void> {
+  async logout(): Promise<void> {
     await this.safeClick(this.nav.logoutLink, 'Header: click Logout');
   }
 
-  async logoutVisible(): Promise<void> {
+  async assertLogoutVisible(): Promise<void> {
     await this.waiter.waitVisible(this.nav.logoutLink);
   }
 

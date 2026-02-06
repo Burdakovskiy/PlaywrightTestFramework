@@ -29,4 +29,12 @@ export class Waiter {
   async waitPageReady(state: LoadState = 'domcontentloaded') {
     await this.page.waitForLoadState(state, { timeout: this.timeouts.navigation });
   }
+
+  async waitCount(
+    locator: Locator,
+    count: number,
+    timeoutMs: number = this.timeouts.ui,
+  ): Promise<void> {
+    await this.expect(locator).toHaveCount(count, { timeout: timeoutMs });
+  }
 }

@@ -21,51 +21,9 @@ export class HomePage extends BasePage {
     };
   }
 
-  async openHome(): Promise<void> {
-    await this.open('/');
-  }
-
-  async goToLoginSignup(): Promise<void> {
-    this.logger.info('Home: go to Login/Signup');
-    await this.header.clickSignupLogin();
-  }
-
-  async goToContuctUs(): Promise<void> {
-    this.logger.info('Home: go to ContactUs');
-    await this.header.clickContactUs();
-  }
-
-  async goToProducts(): Promise<void> {
-    this.logger.info('Home: go to Products');
-    await this.header.clickProducts();
-  }
-
   async assertVisible(): Promise<void> {
     this.logger.info('Home: assert visible');
     await this.waiter.waitVisible(this.view.body);
     await this.header.assertSignupLoginVisible();
-  }
-
-  async assertLoggedInAs(expectedName: string): Promise<void> {
-    this.logger.info(`Home: assert logged in as "${expectedName}"`);
-    await this.header.assertLoggedInAs(expectedName);
-  }
-
-  async goToAccountDeletion(): Promise<void> {
-    this.logger.info('Home: go to account deletion');
-    await this.header.clickDeleteAccount();
-  }
-
-  async logout(): Promise<void> {
-    this.logger.info('Home: go to logout from account');
-    await this.header.clickLogout();
-  }
-
-  async assertLogoutVisible(): Promise<void> {
-    await this.header.logoutVisible();
-  }
-
-  async assertNotLoggedIn(): Promise<void> {
-    await this.header.assertNotLoggedIn();
   }
 }
