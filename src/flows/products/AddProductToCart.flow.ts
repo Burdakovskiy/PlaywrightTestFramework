@@ -23,7 +23,7 @@ export class AddProductToCartFlow {
     const cart = await products.addProductsAndProceedToCart(productsCountToAddToCart);
 
     ctx.logger.info('AddProductToCartFlow: Verify cart visibility');
-    cart.assertCartPageVisible();
-    cart.assertProductsPresent(productsCountToAddToCart);
+    await cart.assertCartPageVisible();
+    await cart.assertProductsPresent(productsCountToAddToCart);
   }
 }
