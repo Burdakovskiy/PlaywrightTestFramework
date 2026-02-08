@@ -8,8 +8,12 @@ import { CartPage } from './Cart.page';
 export class ProductsPage extends BasePage {
   private readonly itemsRoot: Locator;
   private readonly items: {
-    title: Locator;
+    productsTitle: Locator;
     productLink: Locator;
+    searchTitle: Locator;
+    searchField: Locator;
+    searchButton: Locator;
+    products: Locator;
   };
 
   private readonly cartModal: {
@@ -22,8 +26,12 @@ export class ProductsPage extends BasePage {
     super(page, config, waiter, logger);
     this.itemsRoot = this.page.locator('.features_items');
     this.items = {
-      title: this.itemsRoot.getByRole('heading', { name: 'All Products' }),
+      productsTitle: this.itemsRoot.getByRole('heading', { name: 'All Products' }),
       productLink: this.itemsRoot.locator('a[href="/product_details/1"]'),
+      searchTitle: this.itemsRoot.getByRole('heading', { name: 'Searched Products' }),
+      searchField: this.page.getByPlaceholder('Search Product'),
+      searchButton: this.page.locator('#submit_search'),
+      products: this.page.locator('.features_items .product-image-wrapper'),
     };
 
     this.cartModal = {
@@ -52,7 +60,7 @@ export class ProductsPage extends BasePage {
 
   async assertProductsPageVisible(): Promise<void> {
     await this.waiter.waitUrl(/\/products/);
-    await this.waiter.waitVisible(this.items.title);
+    await this.waiter.waitVisible(this.items.productsTitle);
   }
 
   async assertProductExist(): Promise<void> {
@@ -63,23 +71,35 @@ export class ProductsPage extends BasePage {
     await this.safeClick(this.items.productLink);
   }
 
-  async addProductsAndProceedToCart(id: number): Promise<CartPage> {
-    for (let currentId = id; currentId >= 1; currentId--) {
+  async searchProduct(name: string): Promise<void> {
+    await this.safeFill(this.items.searchField, name);
+    await this.safeClick(this.items.searchButton);
+  }
+
+  async verifySearching(count: number): Promise<void> {
+    await this.waiter.waitVisible(this.items.searchTitle);
+    await this.waiter.waitCount(this.items.products, count);
+  }
+
+  async addProductsAndProceedToCart(ids: number[]): Promise<CartPage> {
+    let itemCounter = 0;
+    for (const currentId of ids) {
       const card = this.productCardById(currentId);
       await this.hoverOverTheProduct(card);
       await this.safeClick(this.addToCartButtonInCard(card), `Add to cart: productId=${currentId}`);
+      itemCounter++;
 
-      const continueShopping = currentId > 1;
+      const isLast = ids.length == itemCounter;
 
       await this.waiter.waitVisible(
-        continueShopping ? this.cartModal.continueShopping : this.cartModal.viewCart,
+        isLast ? this.cartModal.continueShopping : this.cartModal.viewCart,
       );
 
-      if (continueShopping) {
+      if (isLast) {
+        await this.safeClick(this.cartModal.viewCart, 'Cart modal: View Cart');
+      } else {
         await this.safeClick(this.cartModal.continueShopping, 'Cart modal: Continue Shopping');
         await this.waiter.waitHidden(this.cartModal.root);
-      } else {
-        await this.safeClick(this.cartModal.viewCart, 'Cart modal: View Cart');
       }
     }
 

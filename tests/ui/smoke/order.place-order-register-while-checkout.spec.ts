@@ -6,5 +6,6 @@ import { PlaceOrderRegisterWhileCheckoutFlow } from '../../../src/flows/order/Pl
 test('@smoke place order register while checkout flow', async ({ ctx }) => {
   const user = UserDataFactory.createUniqueUser();
   const data = PaymentDataFactory.createPaymentData(user);
-  await PlaceOrderRegisterWhileCheckoutFlow.run(ctx, user, data);
+  const productsId = [1, 2];
+  await PlaceOrderRegisterWhileCheckoutFlow.run(ctx, user, data, productsId);
 });

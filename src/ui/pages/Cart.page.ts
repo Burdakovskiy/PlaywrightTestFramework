@@ -22,10 +22,10 @@ export class CartPage extends BasePage {
     await this.waiter.waitVisible(this.cartTable);
   }
 
-  async assertProductsPresent(productCount: number): Promise<void> {
-    for (let currentId = productCount; currentId > 1; currentId--) {
-      await this.waiter.waitVisible(this.cartRows.first());
-      await this.waiter.waitCount(this.cartRows, currentId);
+  async assertProductsPresent(productsId: number[]): Promise<void> {
+    await this.waiter.waitVisible(this.cartRows.first());
+    await this.waiter.waitCount(this.cartRows, productsId.length);
+    for (const currentId of productsId) {
       const row = this.cartTable.locator(`tbody tr#product-${currentId}`);
       await this.waiter.waitVisible(row);
     }

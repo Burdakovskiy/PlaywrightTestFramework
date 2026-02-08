@@ -4,7 +4,7 @@ import { HeaderComponent } from '../../../src/ui/components/Header.component';
 import { HomePage } from '../../ui/pages/Home.page';
 
 export class AddProductToCartFlow {
-  static async run(ctx: TestContext): Promise<void> {
+  static async run(ctx: TestContext, productsId: number[]): Promise<void> {
     const header = new HeaderComponent(ctx.page, ctx.config, ctx.waiter, ctx.logger);
     const home = new HomePage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
     const products = new ProductsPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
@@ -18,11 +18,10 @@ export class AddProductToCartFlow {
     await products.assertProductsPageVisible();
 
     ctx.logger.info('AddProductToCartFlow: Add products to cart and proceed to cart');
-    const productsCountToAddToCart = 2;
-    const cart = await products.addProductsAndProceedToCart(productsCountToAddToCart);
+    const cart = await products.addProductsAndProceedToCart(productsId);
 
     ctx.logger.info('AddProductToCartFlow: Verify cart visibility');
     await cart.assertVisible();
-    await cart.assertProductsPresent(productsCountToAddToCart);
+    await cart.assertProductsPresent(productsId);
   }
 }

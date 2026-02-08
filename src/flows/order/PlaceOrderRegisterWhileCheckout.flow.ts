@@ -12,7 +12,12 @@ import { PaymentDataFactory } from '../../data/factories/PaymentData.factory';
 import { PaymentDataEntity } from '../../domain/PaymentDataEntity';
 
 export class PlaceOrderRegisterWhileCheckoutFlow {
-  static async run(ctx: TestContext, user: UserEntity, data: PaymentDataEntity): Promise<void> {
+  static async run(
+    ctx: TestContext,
+    user: UserEntity,
+    data: PaymentDataEntity,
+    productsId: number[],
+  ): Promise<void> {
     const header = new HeaderComponent(ctx.page, ctx.config, ctx.waiter, ctx.logger);
     const home = new HomePage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
     const products = new ProductsPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
@@ -33,8 +38,7 @@ export class PlaceOrderRegisterWhileCheckoutFlow {
     ctx.logger.info(
       'PlaceOrderRegisterWhileCheckoutFlow: Add products to cart and proceed to cart',
     );
-    const productsCountToAddToCart = 2;
-    const cart = await products.addProductsAndProceedToCart(productsCountToAddToCart);
+    const cart = await products.addProductsAndProceedToCart(productsId);
 
     ctx.logger.info(
       'PlaceOrderRegisterWhileCheckoutFlow: Verify cart visibility and proceed to checkout -> login',
