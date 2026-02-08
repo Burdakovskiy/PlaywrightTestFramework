@@ -13,17 +13,19 @@ export class HeaderComponent extends BaseComponent {
     logoutLink: Locator;
     contactUsLink: Locator;
     productsLink: Locator;
+    cartLink: Locator;
   };
 
   constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
     super(page, config, waiter, logger);
     this.nav = {
-      signupLoginLink: this.page.getByRole('link', { name: 'Signup / Login' }),
+      signupLoginLink: this.page.getByRole('link', { name: /Signup \/ Login/i }),
       loggedInAsText: this.page.getByText('Logged in as', { exact: false }),
-      deleteAccountLink: this.page.getByRole('link', { name: 'Delete Account' }),
-      logoutLink: this.page.getByRole('link', { name: 'Logout' }),
-      contactUsLink: this.page.getByRole('link', { name: 'Contact us' }),
-      productsLink: this.page.getByRole('link', { name: 'products' }),
+      deleteAccountLink: this.page.getByRole('link', { name: /Delete Account/i }),
+      logoutLink: this.page.getByRole('link', { name: /Logout/i }),
+      contactUsLink: this.page.getByRole('link', { name: /Contact us/i }),
+      productsLink: this.page.getByRole('link', { name: /products/i }),
+      cartLink: this.page.getByRole('link', { name: /Cart/i }),
     };
   }
 
@@ -41,6 +43,10 @@ export class HeaderComponent extends BaseComponent {
 
   async goToProducts(): Promise<void> {
     await this.safeClick(this.nav.productsLink, 'Header: click Products');
+  }
+
+  async goToCart(): Promise<void> {
+    await this.safeClick(this.nav.cartLink, 'Header: click Cart');
   }
 
   async assertLoggedInAs(expectedName: string): Promise<void> {

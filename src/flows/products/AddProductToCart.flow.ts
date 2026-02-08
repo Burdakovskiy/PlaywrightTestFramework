@@ -1,7 +1,6 @@
 import type { TestContext } from '../../fixtures/types';
 import { ProductsPage } from '../../../src/ui/pages/Products.page';
 import { HeaderComponent } from '../../../src/ui/components/Header.component';
-import { CartPage } from '../../../src/ui/pages/Cart.page';
 import { HomePage } from '../../ui/pages/Home.page';
 
 export class AddProductToCartFlow {
@@ -23,7 +22,7 @@ export class AddProductToCartFlow {
     const cart = await products.addProductsAndProceedToCart(productsCountToAddToCart);
 
     ctx.logger.info('AddProductToCartFlow: Verify cart visibility');
-    await cart.assertCartPageVisible();
+    await cart.assertVisible();
     await cart.assertProductsPresent(productsCountToAddToCart);
   }
 }
