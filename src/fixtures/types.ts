@@ -12,4 +12,5 @@ export interface TestContext {
   timeouts: EffectiveTimeouts;
   waiter: Waiter;
   uiRegistry: UiRegistry;
+  step<T>(name: string, body: () => Promise<T>): Promise<T>;
 }

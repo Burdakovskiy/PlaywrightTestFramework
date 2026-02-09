@@ -5,19 +5,25 @@ export class ScrollUpFlow {
     const header = ctx.uiRegistry.header();
     const home = ctx.uiRegistry.home();
 
-    ctx.logger.info('ScrollUpFlow: Open Home & verify visible');
-    await header.goToHome();
-    await home.assertVisible();
+    await ctx.step('Open Home & verify visible', async () => {
+      await header.goToHome();
+      await home.assertVisible();
+    });
 
-    ctx.logger.info('ScrollUpFlow: Scroll down & verify SUBSCRIPTION');
-    await home.scrollToSubscriptionAndAssertVisible();
+    await ctx.step('Scroll down & verify SUBSCRIPTION', async () => {
+      await home.scrollToSubscriptionAndAssertVisible();
+    });
+
+    await ctx.step('Logout', async () => {});
 
     if (mode === 'arrow') {
-      ctx.logger.info('ScrollUpFlow: Scroll up using arrow');
-      home.clickScrollUpArrowAndAssertTop();
+      await ctx.step('Scroll up using arrow', async () => {
+        home.clickScrollUpArrowAndAssertTop();
+      });
     } else {
-      ctx.logger.info('ScrollUpFlow: Scroll up without arrow');
-      await home.scrollToTopAndAssertTop();
+      await ctx.step('Scroll up without arrow', async () => {
+        await home.scrollToTopAndAssertTop();
+      });
     }
   }
 }

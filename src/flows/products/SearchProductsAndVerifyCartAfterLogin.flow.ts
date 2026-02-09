@@ -1,5 +1,6 @@
 import type { TestContext } from '../../fixtures/types';
 import type { UserEntity } from '../../domain/UserEntity';
+import type { CartPage } from '../../ui/pages/Cart.page';
 import { RegisterUserFlow } from '../../../src/flows/auth/RegisterUser.flow';
 import { DeleteAccountFlow } from '../../../src/flows/auth/DeleteAccount.flow';
 import { LoginUserFlow } from '../../../src/flows/auth/LoginUser.flow';
@@ -17,38 +18,39 @@ export class SearchProductsAndVerifyCartAfterLogin {
     const products = ctx.uiRegistry.products();
     const productsCount = productsId.length;
 
+    let cart: CartPage;
+
     await RegisterUserFlow.run(ctx, user);
     await LogoutFlow.run(ctx);
 
-    ctx.logger.info('SearchProductsAndVerifyCartAfterLogin: Open Home & verify visible');
-    await header.goToHome();
-    await home.assertVisible();
+    await ctx.step('Open Home & verify visible', async () => {
+      await header.goToHome();
+      await home.assertVisible();
+    });
 
-    ctx.logger.info(
-      'SearchProductsAndVerifyCartAfterLogin: Navigate to Products page and verify visibility',
-    );
-    await header.goToProducts();
-    await products.assertProductsPageVisible();
+    await ctx.step('Navigate to Products page and verify visibility', async () => {
+      await header.goToProducts();
+      await products.assertProductsPageVisible();
+    });
 
-    ctx.logger.info(
-      'SearchProductsAndVerifyCartAfterLogin: Enter product name and click search button',
-    );
-    await products.searchProduct(searchRequest);
-    await products.verifySearching(productsCount);
+    await ctx.step('Enter product name and click search button', async () => {
+      await products.searchProduct(searchRequest);
+      await products.verifySearching(productsCount);
+    });
 
-    ctx.logger.info(
-      'SearchProductsAndVerifyCartAfterLogin: Add products to cart and proceed to cart',
-    );
-    const cart = await products.addProductsAndProceedToCart(productsId);
-    await cart.assertVisible();
-    await cart.assertProductsPresent(productsId);
+    await ctx.step('Add products to cart and proceed to cart', async () => {
+      cart = await products.addProductsAndProceedToCart(productsId);
+      await cart.assertVisible();
+      await cart.assertProductsPresent(productsId);
+    });
 
     await LoginUserFlow.run(ctx, user);
 
-    ctx.logger.info('SearchProductsAndVerifyCartAfterLogin: Proceed to cart and verify products');
-    header.goToCart();
-    await cart.assertVisible();
-    await cart.assertProductsPresent(productsId);
+    await ctx.step('Proceed to cart and verify products', async () => {
+      await header.goToCart();
+      await cart.assertVisible();
+      await cart.assertProductsPresent(productsId);
+    });
 
     await DeleteAccountFlow.run(ctx);
   }

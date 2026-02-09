@@ -26,12 +26,10 @@ export class AccountDeletedPage extends BasePage {
   }
 
   async assertAccountDeletedVisible(): Promise<void> {
-    this.logger.info('AccountDeleted: assert ACCOUNT DELETED visible');
     await this.waiter.waitVisible(this.view.title);
   }
 
   async continue(): Promise<void> {
-    this.logger.info('AccountDeleted: click Continue');
     await this.safeClick(this.actions.continue, 'Click Continue');
   }
 }

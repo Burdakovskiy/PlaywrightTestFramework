@@ -25,7 +25,10 @@ export const test = base.extend<Fixtures, WorkerFixtures>({
     { scope: 'worker' },
   ],
   ctx: async ({ page, config }, use, testInfo) => {
-    const logger = new ConsoleLogger(testInfo.title);
+    const logger = new ConsoleLogger(
+      testInfo.title,
+      (process.env.LOG_LEVEL as any) ?? 'info', // debug | info | warn | error
+    );
     const timeouts = Timeouts.from(config);
     const waiter = new Waiter(page, expect, timeouts);
     const uiRegistry = new UiRegistry({ page, config, waiter, logger });
@@ -34,7 +37,10 @@ export const test = base.extend<Fixtures, WorkerFixtures>({
       window.confirm = () => true;
     });
 
-    logger.info('Creating TestContext');
+    const step = async <T>(name: string, body: () => Promise<T>): Promise<T> => {
+      logger.info(`[STEP] ${name}`);
+      return await base.step(name, body);
+    };
 
     const ctx: TestContext = {
       page,
@@ -43,10 +49,10 @@ export const test = base.extend<Fixtures, WorkerFixtures>({
       timeouts,
       waiter,
       uiRegistry,
+      step,
     };
 
     await use(ctx);
-    logger.info('TestContext disposed');
   },
 });
 

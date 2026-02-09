@@ -9,21 +9,25 @@ export class RegisterUserFlow {
     const signup = ctx.uiRegistry.signupAccount();
     const created = ctx.uiRegistry.accountCreated();
 
-    ctx.logger.info('FLOW: Open Home & verify visible');
-    await header.goToHome();
-    await home.assertVisible();
+    await ctx.step('Open Home & verify visible', async () => {
+      await header.goToHome();
+      await home.assertVisible();
+    });
 
-    ctx.logger.info('FLOW: Go to Signup/Login & verify block');
-    await header.goToSignupLogin();
-    await login.assertNewUserSignupVisible();
+    await ctx.step('Go to Signup/Login & verify block', async () => {
+      await header.goToSignupLogin();
+      await login.assertNewUserSignupVisible();
+    });
 
-    ctx.logger.info('FLOW: Fill in user info and submit account creation');
-    await login.startSignup(user.name, user.email);
-    await signup.completeSignup(user, user.address);
+    await ctx.step('Fill in user info and submit account creation', async () => {
+      await login.startSignup(user.name, user.email);
+      await signup.completeSignup(user, user.address);
+    });
 
-    ctx.logger.info('FLOW: Verify created + continue + logged in');
-    await created.assertAccountCreatedVisible();
-    await created.continueToHome();
-    await header.assertLoggedInAs(user.name);
+    await ctx.step('Verify created + continue + logged in', async () => {
+      await created.assertAccountCreatedVisible();
+      await created.continueToHome();
+      await header.assertLoggedInAs(user.name);
+    });
   }
 }

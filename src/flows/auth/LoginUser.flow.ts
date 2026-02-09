@@ -10,18 +10,22 @@ export class LoginUserFlow {
     const header = ctx.uiRegistry.header();
     const login = ctx.uiRegistry.loginSignup();
 
-    ctx.logger.info('FLOW: Open Home & verify visible');
-    await header.goToHome();
-    await home.assertVisible();
+    await ctx.step('Open Home & verify visible', async () => {
+      await header.goToHome();
+      await home.assertVisible();
+    });
 
-    ctx.logger.info('FLOW: Go to Signup/Login & verify login block');
-    await header.goToSignupLogin();
-    await login.assertLoginToYourAccountVisible();
+    await ctx.step('Go to Signup/Login & verify login block', async () => {
+      await header.goToSignupLogin();
+      await login.assertLoginToYourAccountVisible();
+    });
 
-    ctx.logger.info('FLOW: Login with valid credentials');
-    await login.startLogin(user.email, user.password);
+    await ctx.step('FLOW: Login with valid credentials', async () => {
+      await login.startLogin(user.email, user.password);
+    });
 
-    ctx.logger.info('FLOW: Verify logged in');
-    await header.assertLoggedInAs(user.name);
+    await ctx.step('FLOW: Verify logged in', async () => {
+      await header.assertLoggedInAs(user.name);
+    });
   }
 }

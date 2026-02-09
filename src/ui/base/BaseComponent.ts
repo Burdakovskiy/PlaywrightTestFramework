@@ -12,14 +12,14 @@ export abstract class BaseComponent {
   ) {}
 
   protected async open(path: string): Promise<void> {
-    this.logger.info(`Open: ${path}`);
+    this.logger.debug(`Open: ${path}`);
     await this.page.goto(path);
     await this.waiter.waitPageReady();
     await this.dismissConsentIfPresent();
   }
 
   protected async safeClick(locator: Locator, description: string = 'click'): Promise<void> {
-    this.logger.info(`Component action: ${description}`);
+    this.logger.debug(`Component action: ${description}`);
     await this.waiter.waitVisible(locator);
     await locator.click();
   }
@@ -40,7 +40,7 @@ export abstract class BaseComponent {
     const overlay = this.page.locator('.fc-consent-root, .fc-dialog-overlay').first();
 
     if (await overlay.isVisible({ timeout: 500 })) {
-      this.logger.info('Consent overlay detected: dismissing');
+      this.logger.debug('Consent overlay detected: dismissing');
 
       const accept = this.page.getByRole('button', {
         name: /accept|agree|allow all|akzeptieren|alles akzeptieren/i,
@@ -57,7 +57,7 @@ export abstract class BaseComponent {
       } else if (await close.isVisible({ timeout: 500 }).catch(() => false)) {
         await close.click();
       } else {
-        this.logger.info('Consent overlay has no known buttons');
+        this.logger.warn('Consent overlay has no known buttons');
       }
 
       await overlay.waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});

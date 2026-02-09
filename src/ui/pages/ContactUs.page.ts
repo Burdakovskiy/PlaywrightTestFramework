@@ -53,7 +53,6 @@ export class ContactUsPage extends BasePage {
   }
 
   async assertContactVisible(): Promise<void> {
-    this.logger.info('ContactUs: assert Contact us visible');
     await this.waiter.waitVisible(this.pageTitle);
     await this.waiter.waitVisible(this.formRoot);
     await this.waiter.waitUrl(/\/contact_us/);

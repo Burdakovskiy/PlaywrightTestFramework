@@ -68,19 +68,16 @@ export class LoginSignupPage extends BasePage {
   }
 
   async assertLoginPageVisible(): Promise<void> {
-    this.logger.info('Login: Page is presented');
     await this.waiter.waitUrl(/\/login/);
     await this.assertNewUserSignupVisible();
     await this.assertLoginToYourAccountVisible();
   }
 
   async assertNewUserSignupVisible(): Promise<void> {
-    this.logger.info('Signup: assert New User Signup visible');
     await this.waiter.waitVisible(this.signup.newUserTitle);
   }
 
   async assertLoginToYourAccountVisible(): Promise<void> {
-    this.logger.info('Login: assert Login To Your Account visible');
     await this.waiter.waitVisible(this.login.loginTitle);
   }
 

@@ -92,13 +92,10 @@ export class SignupAccountPage extends BasePage {
   }
 
   private async assertEnterAccountInfoVisible(): Promise<void> {
-    this.logger.info('SignupAccount: assert ENTER ACCOUNT INFORMATION visible');
     await this.waiter.waitVisible(this.view.enterAccountInfoTitle);
   }
 
   private async fillAccountInformation(user: UserEntity): Promise<void> {
-    this.logger.info('SignupAccount: fill account information');
-
     if (user.title === 'Mr') {
       await this.safeClick(this.titles.mr, 'Select title Mr');
     } else {
@@ -152,7 +149,6 @@ export class SignupAccountPage extends BasePage {
   }
 
   private async submitCreateAccount(): Promise<void> {
-    this.logger.info('SignupAccount: submit Create Account');
     await this.safeClick(this.actions.createAccount, 'Click Create Account');
   }
 

@@ -12,7 +12,7 @@ export abstract class BasePage {
   ) {}
 
   protected async safeClick(locator: Locator, description: string = 'click'): Promise<void> {
-    this.logger.info(`Action: ${description}`);
+    this.logger.debug(`Action: ${description}`);
     await this.waiter.waitVisible(locator);
     await locator.click();
   }
@@ -22,7 +22,7 @@ export abstract class BasePage {
     value: string,
     description: string = 'fill',
   ): Promise<void> {
-    this.logger.info(`Action: ${description} = "${value}"`);
+    this.logger.debug(`Action: ${description} = "${value}"`);
     await this.waiter.waitVisible(locator);
     await locator.fill(value);
   }

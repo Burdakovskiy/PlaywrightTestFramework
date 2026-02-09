@@ -5,11 +5,13 @@ export class DeleteAccountFlow {
     const header = ctx.uiRegistry.header();
     const deleted = ctx.uiRegistry.accountDeleted();
 
-    ctx.logger.info('FLOW: Click Delete Account');
-    await header.goToAccountDeletion();
+    await ctx.step('Delete Account', async () => {
+      await header.goToAccountDeletion();
+    });
 
-    ctx.logger.info('FLOW: Verify Account Deleted + Continue');
-    await deleted.assertAccountDeletedVisible();
-    await deleted.continue();
+    await ctx.step('Verify Account Deleted + Continue', async () => {
+      await deleted.assertAccountDeletedVisible();
+      await deleted.continue();
+    });
   }
 }

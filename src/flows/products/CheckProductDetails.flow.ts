@@ -7,20 +7,21 @@ export class CheckProductDetails {
     const products = ctx.uiRegistry.products();
     const details = ctx.uiRegistry.productDetails();
 
-    ctx.logger.info('TEST: Open Home & verify visible');
-    await header.goToHome();
-    await home.assertVisible();
-
-    ctx.logger.info('TEST: Navigate to Products page and verify visibility');
-    await header.goToProducts();
-    await products.assertProductsPageVisible();
-
-    ctx.logger.info('TEST: Verify product exist and click view product button');
-    await products.assertProductExist();
-    await products.clickViewProductDetails();
-    await details.assertProductDetailPageVisible();
-
-    ctx.logger.info('TEST: Verify product details elements');
-    await details.assertDetailsElementsExist();
+    await ctx.step('Open Home & verify visible', async () => {
+      await header.goToHome();
+      await home.assertVisible();
+    });
+    await ctx.step('Navigate to Products page and verify visibility', async () => {
+      await header.goToProducts();
+      await products.assertProductsPageVisible();
+    });
+    await ctx.step('Verify product exist and click view product button', async () => {
+      await products.assertProductExist();
+      await products.clickViewProductDetails();
+      await details.assertProductDetailPageVisible();
+    });
+    await ctx.step('Verify product details elements', async () => {
+      await details.assertDetailsElementsExist();
+    });
   }
 }

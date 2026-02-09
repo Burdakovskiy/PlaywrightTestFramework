@@ -7,21 +7,25 @@ export class ContactUsFlow {
     const header = ctx.uiRegistry.header();
     const contactUs = ctx.uiRegistry.contactUs();
 
-    ctx.logger.info('ContactUsFlow: Open Home & verify visible');
-    await header.goToHome();
-    await home.assertVisible();
+    await ctx.step(' Open Home & verify visible', async () => {
+      await header.goToHome();
+      await home.assertVisible();
+    });
 
-    ctx.logger.info('ContactUsFlow: Go to ContactUs & verify block');
-    await header.goToContactUs();
-    await contactUs.assertContactVisible();
+    await ctx.step('Go to ContactUs & verify block', async () => {
+      await header.goToContactUs();
+      await contactUs.assertContactVisible();
+    });
 
-    ctx.logger.info('ContactUsFlow: Fill in contact info, upload file and submit');
-    await contactUs.fillInInfo(data);
-    await contactUs.pressSubmit();
+    await ctx.step('Fill in contact info, upload file and submit', async () => {
+      await contactUs.fillInInfo(data);
+      await contactUs.pressSubmit();
+    });
 
-    ctx.logger.info('ContactUsFlow: Check success screen and go to home');
-    await contactUs.assertSuccessMessageVisible();
-    await contactUs.pressToHome();
-    await home.assertVisible();
+    await ctx.step('Check success screen and go to home', async () => {
+      await contactUs.assertSuccessMessageVisible();
+      await contactUs.pressToHome();
+      await home.assertVisible();
+    });
   }
 }

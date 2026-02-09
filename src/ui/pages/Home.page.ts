@@ -32,26 +32,22 @@ export class HomePage extends BasePage {
   }
 
   async assertVisible(): Promise<void> {
-    this.logger.info('Home: assert visible');
     await this.waiter.waitVisible(this.view.body);
     await this.header.assertSignupLoginVisible();
   }
 
   async scrollToSubscriptionAndAssertVisible(): Promise<void> {
-    this.logger.info('Home: scroll to footer (SUBSCRIPTION)');
     await this.view.subscriptionTitle.scrollIntoViewIfNeeded();
     await this.waiter.waitVisible(this.view.subscriptionTitle);
   }
 
   async clickScrollUpArrowAndAssertTop(): Promise<void> {
-    this.logger.info('Home: click scroll-up arrow');
     await this.waiter.waitVisible(this.view.scrollUpArrow);
     await this.view.scrollUpArrow.click();
     await this.waiter.waitVisible(this.view.mainTitle);
   }
 
   async scrollToTopAndAssertTop(): Promise<void> {
-    this.logger.info('Home: scroll to top (no arrow)');
     await this.page.evaluate(() => window.scrollTo(0, 0));
     await this.waiter.waitVisible(this.view.mainTitle);
   }

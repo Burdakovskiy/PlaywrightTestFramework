@@ -27,12 +27,10 @@ export class AccountCreatedPage extends BasePage {
   }
 
   async assertAccountCreatedVisible(): Promise<void> {
-    this.logger.info('AccountCreated: assert ACCOUNT CREATED visible');
     await this.waiter.waitVisible(this.view.title);
   }
 
   async continueToHome(): Promise<void> {
-    this.logger.info('AccountCreated: click Continue');
     await this.safeClick(this.actions.continue, 'Click Continue');
   }
 }
