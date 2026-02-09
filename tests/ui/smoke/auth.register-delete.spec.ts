@@ -7,5 +7,5 @@ test('@smoke Register and delete user', async ({ ctx }) => {
   const user = UserDataFactory.createUniqueUser();
 
   await RegisterUserFlow.run(ctx, user);
-  // await DeleteAccountFlow.run(ctx);
+  await DeleteAccountFlow.run(ctx);
 });

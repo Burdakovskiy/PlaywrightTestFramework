@@ -1,18 +1,13 @@
 import type { TestContext } from '../../fixtures/types';
 import type { UserEntity } from '../../domain/UserEntity';
-import { HomePage } from '../../ui/pages/Home.page';
-import { LoginSignupPage } from '../../ui/pages/LoginSignup.page';
-import { SignupAccountPage } from '../../ui/pages/SignupAccount.page';
-import { AccountCreatedPage } from '../../ui/pages/AccountCreated.page';
-import { HeaderComponent } from '../../../src/ui/components/Header.component';
 
 export class RegisterUserFlow {
   static async run(ctx: TestContext, user: UserEntity): Promise<void> {
-    const home = new HomePage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
-    const header = new HeaderComponent(ctx.page, ctx.config, ctx.waiter, ctx.logger);
-    const login = new LoginSignupPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
-    const signup = new SignupAccountPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
-    const created = new AccountCreatedPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
+    const home = ctx.uiRegistry.home();
+    const header = ctx.uiRegistry.header();
+    const login = ctx.uiRegistry.loginSignup();
+    const signup = ctx.uiRegistry.signupAccount();
+    const created = ctx.uiRegistry.accountCreated();
 
     ctx.logger.info('FLOW: Open Home & verify visible');
     await header.goToHome();

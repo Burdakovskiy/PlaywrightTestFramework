@@ -1,7 +1,4 @@
 import type { TestContext } from '../../fixtures/types';
-import { ProductsPage } from '../../ui/pages/Products.page';
-import { HeaderComponent } from '../../ui/components/Header.component';
-import { HomePage } from '../../ui/pages/Home.page';
 import type { UserEntity } from '../../domain/UserEntity';
 import { RegisterUserFlow } from '../../../src/flows/auth/RegisterUser.flow';
 import { DeleteAccountFlow } from '../../../src/flows/auth/DeleteAccount.flow';
@@ -15,9 +12,9 @@ export class SearchProductsAndVerifyCartAfterLogin {
     productsId: number[],
     user: UserEntity,
   ): Promise<void> {
-    const header = new HeaderComponent(ctx.page, ctx.config, ctx.waiter, ctx.logger);
-    const home = new HomePage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
-    const products = new ProductsPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
+    const header = ctx.uiRegistry.header();
+    const home = ctx.uiRegistry.home();
+    const products = ctx.uiRegistry.products();
     const productsCount = productsId.length;
 
     await RegisterUserFlow.run(ctx, user);

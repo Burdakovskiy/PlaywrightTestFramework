@@ -1,13 +1,10 @@
 import type { TestContext } from '../../fixtures/types';
-import { ProductsPage } from '../../../src/ui/pages/Products.page';
-import { HeaderComponent } from '../../../src/ui/components/Header.component';
-import { HomePage } from '../../ui/pages/Home.page';
 
 export class AddProductToCartFlow {
   static async run(ctx: TestContext, productsId: number[]): Promise<void> {
-    const header = new HeaderComponent(ctx.page, ctx.config, ctx.waiter, ctx.logger);
-    const home = new HomePage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
-    const products = new ProductsPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
+    const header = ctx.uiRegistry.header();
+    const home = ctx.uiRegistry.home();
+    const products = ctx.uiRegistry.products();
 
     ctx.logger.info('AddProductToCartFlow: Open Home & verify visible');
     await header.goToHome();

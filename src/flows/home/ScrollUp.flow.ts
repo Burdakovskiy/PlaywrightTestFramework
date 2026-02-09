@@ -1,11 +1,9 @@
 import type { TestContext } from '../../fixtures/types';
-import { HeaderComponent } from '../../ui/components/Header.component';
-import { HomePage } from '../../ui/pages/Home.page';
 
 export class ScrollUpFlow {
   static async run(ctx: TestContext, mode: 'arrow' | 'manual'): Promise<void> {
-    const header = new HeaderComponent(ctx.page, ctx.config, ctx.waiter, ctx.logger);
-    const home = new HomePage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
+    const header = ctx.uiRegistry.header();
+    const home = ctx.uiRegistry.home();
 
     ctx.logger.info('ScrollUpFlow: Open Home & verify visible');
     await header.goToHome();
