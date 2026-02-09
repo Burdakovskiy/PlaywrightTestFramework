@@ -9,7 +9,7 @@ import { AccountCreatedPage } from '../../ui/pages/AccountCreated.page';
 import { DeleteAccountFlow } from '../auth/DeleteAccount.flow';
 import { PaymentDataEntity } from '../../domain/PaymentDataEntity';
 
-export class PlaceOrderRegisterWhileCheckoutFlow {
+export class DownloadInvoiceAfterPurchaseOrderFlow {
   static async run(
     ctx: TestContext,
     user: UserEntity,
@@ -23,56 +23,63 @@ export class PlaceOrderRegisterWhileCheckoutFlow {
     const signup = new SignupAccountPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
     const created = new AccountCreatedPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
 
-    ctx.logger.info('PlaceOrderRegisterWhileCheckoutFlow: Open Home & verify visible');
+    ctx.logger.info('DownloadInvoiceAfterPurchaseOrderFlow: Open Home & verify visible');
     await header.goToHome();
     await home.assertVisible();
 
     ctx.logger.info(
-      'PlaceOrderRegisterWhileCheckoutFlow: Navigate to Products page and verify visibility',
+      'DownloadInvoiceAfterPurchaseOrderFlow: Navigate to Products page and verify visibility',
     );
     await header.goToProducts();
     await products.assertProductsPageVisible();
 
     ctx.logger.info(
-      'PlaceOrderRegisterWhileCheckoutFlow: Add products to cart and proceed to cart',
+      'DownloadInvoiceAfterPurchaseOrderFlow: Add products to cart and proceed to cart',
     );
     const cart = await products.addProductsAndProceedToCart(productsId);
 
     ctx.logger.info(
-      'PlaceOrderRegisterWhileCheckoutFlow: Verify cart visibility and proceed to checkout -> login',
+      'DownloadInvoiceAfterPurchaseOrderFlow: Verify cart visibility and proceed to checkout -> login',
     );
     await cart.assertVisible();
     await cart.proceedToCheckout();
     await cart.goToRegisterLogin();
 
-    ctx.logger.info('PlaceOrderRegisterWhileCheckoutFlow: Signup new user and verify creation');
+    ctx.logger.info('DownloadInvoiceAfterPurchaseOrderFlow: Signup new user and verify creation');
     await login.assertNewUserSignupVisible();
     await login.startSignup(user.name, user.email);
     await signup.completeSignup(user, user.address);
     await created.assertAccountCreatedVisible();
 
-    ctx.logger.info('PlaceOrderRegisterWhileCheckoutFlow: Proceed to cart and Proceed To Checkout');
+    ctx.logger.info(
+      'DownloadInvoiceAfterPurchaseOrderFlow: Proceed to cart and Proceed To Checkout',
+    );
     await header.goToCart();
     const checkout = await cart.proceedToCheckout();
 
     ctx.logger.info(
-      'PlaceOrderRegisterWhileCheckoutFlow: Verify Checkout visibility, fill in comment form and proceed',
+      'DownloadInvoiceAfterPurchaseOrderFlow: Verify Checkout visibility, fill in comment form and proceed',
     );
     await checkout.assertVisible();
     await checkout.fillInOrderComment(data.orderComment);
     const payment = await checkout.proceedToPayment();
 
     ctx.logger.info(
-      'PlaceOrderRegisterWhileCheckoutFlow: Verify Payment visibility, fill in comment payment data and proceed',
+      'DownloadInvoiceAfterPurchaseOrderFlow: Verify Payment visibility, fill in comment payment data and proceed',
     );
     await payment.assertVisible();
     await payment.fillPaymentData(data);
     const placeOrder = await payment.payAndConfirm();
 
-    ctx.logger.info('PlaceOrderRegisterWhileCheckoutFlow: Verify order placement success');
+    ctx.logger.info('DownloadInvoiceAfterPurchaseOrderFlow: Verify order placement success');
     await placeOrder.assertVisible();
-    await placeOrder.continue();
 
+    ctx.logger.info('DownloadInvoiceAfterPurchaseOrderFlow: Download invoice');
+    const downloadedFile = await placeOrder.downloadInvoice();
+    await placeOrder.assertInvoiceDownloaded(downloadedFile);
+
+    ctx.logger.info('DownloadInvoiceAfterPurchaseOrderFlow: Delete account');
+    await placeOrder.continue();
     await DeleteAccountFlow.run(ctx);
   }
 }
