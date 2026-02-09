@@ -6,7 +6,7 @@ import { LogoutFlow } from '../../../src/flows/auth/Logout.flow';
 import { LoginUserFlow } from '../../../src/flows/auth/LoginUser.flow';
 import { LoginSignupPage } from '../../../src/ui/pages/LoginSignup.page';
 
-test('@smoke logout user', async ({ ctx }) => {
+test('@smoke Logout user', async ({ ctx }) => {
   const login = new LoginSignupPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
 
   const user = UserDataFactory.createUniqueUser();
