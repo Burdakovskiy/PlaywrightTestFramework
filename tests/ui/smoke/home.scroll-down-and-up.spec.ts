@@ -1,4 +1,4 @@
-import { test } from '../../../src/fixtures/test.fixture';
+import { test } from '../../../src/fixtures/ui.fixture';
 import { ScrollUpFlow } from '../../../src/flows/home/ScrollUp.flow';
 
 test.describe('@smoke Scroll down and up', () => {

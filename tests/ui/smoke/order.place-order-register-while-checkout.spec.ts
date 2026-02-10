@@ -1,4 +1,4 @@
-import { test } from '../../../src/fixtures/test.fixture';
+import { test } from '../../../src/fixtures/ui.fixture';
 import { UserDataFactory } from '../../../src/data/factories/UserData.factory';
 import { PaymentDataFactory } from '../../../src/data/factories/PaymentData.factory';
 import { PlaceOrderRegisterWhileCheckoutFlow } from '../../../src/flows/order/PlaceOrderRegisterWhileCheckout.flow';

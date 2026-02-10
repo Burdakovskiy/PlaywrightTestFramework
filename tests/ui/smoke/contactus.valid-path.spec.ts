@@ -1,4 +1,4 @@
-import { test } from '../../../src/fixtures/test.fixture';
+import { test } from '../../../src/fixtures/ui.fixture';
 import { ContactUsDataFactory } from '../../../src/data/factories/ContactUs.factory';
 import { ContactUsFlow } from '../../../src/flows/contactUs/ContactUs.flow';
 

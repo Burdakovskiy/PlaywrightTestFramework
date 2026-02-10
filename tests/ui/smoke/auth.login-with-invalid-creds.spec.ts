@@ -1,4 +1,4 @@
-import { test } from '../../../src/fixtures/test.fixture';
+import { test } from '../../../src/fixtures/ui.fixture';
 import { UserDataFactory } from '../../../src/data/factories/UserData.factory';
 import { RegisterUserFlow } from '../../../src/flows/auth/RegisterUser.flow';
 import { LogoutFlow } from '../../../src/flows/auth/Logout.flow';

@@ -1,4 +1,4 @@
-import { test } from '../../../src/fixtures/test.fixture';
+import { test } from '../../../src/fixtures/ui.fixture';
 import { SearchProductsAndVerifyCartAfterLogin } from '../../../src/flows/products/SearchProductsAndVerifyCartAfterLogin.flow';
 import { UserDataFactory } from '../../../src/data/factories/UserData.factory';
 
