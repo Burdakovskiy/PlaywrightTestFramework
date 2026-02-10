@@ -91,10 +91,6 @@ export class SignupAccountPage extends BasePage {
     };
   }
 
-  private async assertEnterAccountInfoVisible(): Promise<void> {
-    await this.waiter.waitVisible(this.view.enterAccountInfoTitle);
-  }
-
   private async fillAccountInformation(user: UserEntity): Promise<void> {
     if (user.title === 'Mr') {
       await this.safeClick(this.titles.mr, 'Select title Mr');
@@ -157,5 +153,9 @@ export class SignupAccountPage extends BasePage {
     await this.fillAccountInformation(user);
     await this.fillAddressInformation(address);
     await this.submitCreateAccount();
+  }
+
+  private async assertEnterAccountInfoVisible(): Promise<void> {
+    await this.waiter.waitVisible(this.view.enterAccountInfoTitle);
   }
 }

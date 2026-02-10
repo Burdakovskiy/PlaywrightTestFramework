@@ -18,6 +18,7 @@ export class PaymentPage extends BasePage {
   };
   constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
     super(page, config, waiter, logger);
+
     this.paymentDataElements = {
       title: this.page.getByRole('heading', { name: /Payment/i }),
       nameOnCard: this.page.locator('input[name="name_on_card"]'),
@@ -27,11 +28,6 @@ export class PaymentPage extends BasePage {
       expirationYear: this.page.locator('input[name="expiry_year"]'),
       payAndConfirmButton: this.page.getByRole('button', { name: 'Pay and Confirm Order' }),
     };
-  }
-
-  async assertVisible(): Promise<void> {
-    await this.waiter.waitUrl(/\/payment/);
-    await this.waiter.waitVisible(this.paymentDataElements.payAndConfirmButton);
   }
 
   async fillPaymentData(data: Omit<PaymentDataEntity, 'orderComment'>): Promise<void> {
@@ -46,5 +42,10 @@ export class PaymentPage extends BasePage {
     await this.safeClick(this.paymentDataElements.payAndConfirmButton);
     const orderPlaced = new OrderPlacedPage(this.page, this.config, this.waiter, this.logger);
     return orderPlaced;
+  }
+
+  async assertVisible(): Promise<void> {
+    await this.waiter.waitUrl(/\/payment/);
+    await this.waiter.waitVisible(this.paymentDataElements.payAndConfirmButton);
   }
 }

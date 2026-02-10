@@ -7,6 +7,7 @@ import { CartPage } from './Cart.page';
 
 export class ProductsPage extends BasePage {
   private readonly itemsRoot: Locator;
+
   private readonly items: {
     productsTitle: Locator;
     productLink: Locator;
@@ -24,6 +25,7 @@ export class ProductsPage extends BasePage {
 
   constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
     super(page, config, waiter, logger);
+
     this.itemsRoot = this.page.locator('.features_items');
     this.items = {
       productsTitle: this.itemsRoot.getByRole('heading', { name: 'All Products' }),
@@ -56,15 +58,6 @@ export class ProductsPage extends BasePage {
     await card.hover();
 
     await this.waiter.waitVisible(this.addToCartButtonInCard(card));
-  }
-
-  async assertProductsPageVisible(): Promise<void> {
-    await this.waiter.waitUrl(/\/products/);
-    await this.waiter.waitVisible(this.items.productsTitle);
-  }
-
-  async assertProductExist(): Promise<void> {
-    await this.waiter.waitVisible(this.items.productLink);
   }
 
   async clickViewProductDetails(): Promise<void> {
@@ -105,5 +98,14 @@ export class ProductsPage extends BasePage {
 
     const cart = new CartPage(this.page, this.config, this.waiter, this.logger);
     return cart;
+  }
+
+  async assertProductsPageVisible(): Promise<void> {
+    await this.waiter.waitUrl(/\/products/);
+    await this.waiter.waitVisible(this.items.productsTitle);
+  }
+
+  async assertProductExist(): Promise<void> {
+    await this.waiter.waitVisible(this.items.productLink);
   }
 }

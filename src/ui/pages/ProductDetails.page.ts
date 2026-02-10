@@ -14,6 +14,7 @@ export class ProductDetailsPage extends BasePage {
   };
   constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
     super(page, config, waiter, logger);
+
     this.elementRoot = this.page.locator('.product-information');
     this.elements = {
       name: this.elementRoot.getByRole('heading', { name: 'Blue Top' }),

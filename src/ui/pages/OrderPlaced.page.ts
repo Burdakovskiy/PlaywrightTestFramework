@@ -1,31 +1,47 @@
-import { type Download, type Locator, expect } from '@playwright/test';
+import { type Download, type Locator, type Page, expect } from '@playwright/test';
+import type { LoadedConfig } from '../../config/types';
+import type { Logger } from '../../logging/Logger';
+import type { Waiter } from '../../utils/Waiter';
 import { BasePage } from '../base/BasePage';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
 export class OrderPlacedPage extends BasePage {
-  private readonly title: Locator = this.page.getByRole('heading', { name: /ORDER PLACED!/i });
-  private readonly downloadInvoiceButton = this.page.getByRole('link', {
-    name: /Download Invoice/i,
-  });
-  private readonly continueBtn: Locator = this.page.getByRole('link', { name: /Continue/i });
-  private readonly downloadsDir: string = path.resolve(process.cwd(), 'downloads');
+  private readonly elements: {
+    title: Locator;
+    downloadInvoiceButton: Locator;
+    continueBtn: Locator;
+    downloadsDir: string;
+  };
 
-  async assertVisible(): Promise<void> {
-    await this.waiter.waitVisible(this.title);
+  constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
+    super(page, config, waiter, logger);
+
+    this.elements = {
+      title: this.page.getByRole('heading', { name: /ORDER PLACED!/i }),
+      downloadInvoiceButton: this.page.getByRole('link', {
+        name: /Download Invoice/i,
+      }),
+      continueBtn: this.page.getByRole('link', { name: /Continue/i }),
+      downloadsDir: path.resolve(process.cwd(), 'downloads'),
+    };
   }
 
   async continue(): Promise<void> {
-    await this.safeClick(this.continueBtn, 'OrderPlaced: Continue');
+    await this.safeClick(this.elements.continueBtn, 'OrderPlaced: Continue');
   }
 
   async downloadInvoice(): Promise<Download> {
     const [download] = await Promise.all([
       this.page.waitForEvent('download'),
-      this.safeClick(this.downloadInvoiceButton, 'OrderPlaced: Download Invoice'),
+      this.safeClick(this.elements.downloadInvoiceButton, 'OrderPlaced: Download Invoice'),
     ]);
 
     return download;
+  }
+
+  async assertVisible(): Promise<void> {
+    await this.waiter.waitVisible(this.elements.title);
   }
 
   async assertInvoiceDownloaded(download: Download): Promise<void> {
@@ -35,9 +51,9 @@ export class OrderPlacedPage extends BasePage {
     expect(fileName).toMatch(/invoice/i);
     expect(fileName).toMatch(/\.txt$/i);
 
-    await fs.mkdir(this.downloadsDir, { recursive: true });
+    await fs.mkdir(this.elements.downloadsDir, { recursive: true });
 
-    const filePath = path.join(this.downloadsDir, fileName);
+    const filePath = path.join(this.elements.downloadsDir, fileName);
 
     await download.saveAs(filePath);
 

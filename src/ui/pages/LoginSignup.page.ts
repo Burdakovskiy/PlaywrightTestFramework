@@ -67,20 +67,6 @@ export class LoginSignupPage extends BasePage {
     await this.safeClick(this.login.loginButton, 'Login: click Login submit');
   }
 
-  async assertLoginPageVisible(): Promise<void> {
-    await this.waiter.waitUrl(/\/login/);
-    await this.assertNewUserSignupVisible();
-    await this.assertLoginToYourAccountVisible();
-  }
-
-  async assertNewUserSignupVisible(): Promise<void> {
-    await this.waiter.waitVisible(this.signup.newUserTitle);
-  }
-
-  async assertLoginToYourAccountVisible(): Promise<void> {
-    await this.waiter.waitVisible(this.login.loginTitle);
-  }
-
   async startSignup(name: string, email: string): Promise<void> {
     await this.fillSignupName(name);
     await this.fillSignupEmail(email);
@@ -103,5 +89,19 @@ export class LoginSignupPage extends BasePage {
 
   async assertEmailAddressAlreadyExistVisible(): Promise<void> {
     await this.waiter.waitVisible(this.signup.emailExistError);
+  }
+
+  async assertLoginPageVisible(): Promise<void> {
+    await this.waiter.waitUrl(/\/login/);
+    await this.assertNewUserSignupVisible();
+    await this.assertLoginToYourAccountVisible();
+  }
+
+  async assertNewUserSignupVisible(): Promise<void> {
+    await this.waiter.waitVisible(this.signup.newUserTitle);
+  }
+
+  async assertLoginToYourAccountVisible(): Promise<void> {
+    await this.waiter.waitVisible(this.login.loginTitle);
   }
 }

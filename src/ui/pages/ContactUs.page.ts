@@ -52,12 +52,6 @@ export class ContactUsPage extends BasePage {
     };
   }
 
-  async assertContactVisible(): Promise<void> {
-    await this.waiter.waitVisible(this.pageTitle);
-    await this.waiter.waitVisible(this.formRoot);
-    await this.waiter.waitUrl(/\/contact_us/);
-  }
-
   async fillNameInput(name: string): Promise<void> {
     await this.safeFill(this.formLocators.nameInput, name, 'Contact us: fill name');
   }
@@ -96,5 +90,11 @@ export class ContactUsPage extends BasePage {
 
   async assertSuccessMessageVisible(): Promise<void> {
     await this.waiter.waitVisible(this.success.successMessage);
+  }
+
+  async assertContactVisible(): Promise<void> {
+    await this.waiter.waitVisible(this.pageTitle);
+    await this.waiter.waitVisible(this.formRoot);
+    await this.waiter.waitUrl(/\/contact_us/);
   }
 }

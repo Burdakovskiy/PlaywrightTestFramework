@@ -2,7 +2,6 @@ import type { Locator, Page } from '@playwright/test';
 import type { LoadedConfig } from '../../config/types';
 import type { Logger } from '../../logging/Logger';
 import type { Waiter } from '../../utils/Waiter';
-
 import { BasePage } from '../base/BasePage';
 
 export class AccountCreatedPage extends BasePage {
@@ -26,11 +25,11 @@ export class AccountCreatedPage extends BasePage {
     };
   }
 
-  async assertAccountCreatedVisible(): Promise<void> {
-    await this.waiter.waitVisible(this.view.title);
-  }
-
   async continueToHome(): Promise<void> {
     await this.safeClick(this.actions.continue, 'Click Continue');
+  }
+
+  async assertAccountCreatedVisible(): Promise<void> {
+    await this.waiter.waitVisible(this.view.title);
   }
 }

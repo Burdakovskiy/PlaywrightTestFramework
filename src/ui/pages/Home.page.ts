@@ -31,11 +31,6 @@ export class HomePage extends BasePage {
     };
   }
 
-  async assertVisible(): Promise<void> {
-    await this.waiter.waitVisible(this.view.body);
-    await this.header.assertSignupLoginVisible();
-  }
-
   async scrollToSubscriptionAndAssertVisible(): Promise<void> {
     await this.view.subscriptionTitle.scrollIntoViewIfNeeded();
     await this.waiter.waitVisible(this.view.subscriptionTitle);
@@ -50,5 +45,10 @@ export class HomePage extends BasePage {
   async scrollToTopAndAssertTop(): Promise<void> {
     await this.page.evaluate(() => window.scrollTo(0, 0));
     await this.waiter.waitVisible(this.view.mainTitle);
+  }
+
+  async assertVisible(): Promise<void> {
+    await this.waiter.waitVisible(this.view.body);
+    await this.header.assertSignupLoginVisible();
   }
 }

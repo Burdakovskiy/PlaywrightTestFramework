@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 import type { LoadedConfig } from '../config/types';
 import type { Waiter } from './Waiter';
-import type { ConsoleLogger } from '../logging/Logger';
+import type { Logger } from '../logging/Logger';
 
 import { HeaderComponent } from '../ui/components/Header.component';
 import { HomePage } from '../ui/pages/Home.page';
@@ -19,7 +19,7 @@ export type UiDeps = {
   page: Page;
   config: LoadedConfig;
   waiter: Waiter;
-  logger: ConsoleLogger;
+  logger: Logger;
 };
 
 type UiKey = (typeof UI_KEYS)[keyof typeof UI_KEYS];

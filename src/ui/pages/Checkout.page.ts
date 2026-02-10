@@ -15,6 +15,7 @@ export class CheckoutPage extends BasePage {
   };
   constructor(page: Page, config: LoadedConfig, waiter: Waiter, logger: Logger) {
     super(page, config, waiter, logger);
+
     this.checkoutElements = {
       addressDetails: this.page.getByRole('heading', { name: /Address Details/i }),
       deliveryAddress: this.page.getByRole('heading', { name: /delivery address/i }),
@@ -22,16 +23,6 @@ export class CheckoutPage extends BasePage {
       commentField: this.page.locator('textarea[name="message"]'),
       placeOrderButton: this.page.getByRole('link', { name: /place order/i }),
     };
-  }
-
-  async assertVisible(): Promise<void> {
-    await this.waiter.waitUrl(/\/checkout/);
-    await Promise.all([
-      this.waiter.waitVisible(this.checkoutElements.addressDetails),
-      this.waiter.waitVisible(this.checkoutElements.deliveryAddress),
-      this.waiter.waitVisible(this.checkoutElements.billingAddress),
-      this.waiter.waitVisible(this.checkoutElements.commentField),
-    ]);
   }
 
   async fillInOrderComment(comment: string): Promise<void> {
@@ -42,5 +33,15 @@ export class CheckoutPage extends BasePage {
     await this.safeClick(this.checkoutElements.placeOrderButton);
     const payments = new PaymentPage(this.page, this.config, this.waiter, this.logger);
     return payments;
+  }
+
+  async assertVisible(): Promise<void> {
+    await this.waiter.waitUrl(/\/checkout/);
+    await Promise.all([
+      this.waiter.waitVisible(this.checkoutElements.addressDetails),
+      this.waiter.waitVisible(this.checkoutElements.deliveryAddress),
+      this.waiter.waitVisible(this.checkoutElements.billingAddress),
+      this.waiter.waitVisible(this.checkoutElements.commentField),
+    ]);
   }
 }
