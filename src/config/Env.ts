@@ -5,7 +5,7 @@ export interface EnvVars {
 
 export class Env {
   static read(): EnvVars {
-    const ENV = (process.env.ENV ?? 'local').trim();
+    const ENV = (process.env.ENV ?? 'stage').trim();
     const RUN = (process.env.RUN ?? 'all').trim();
 
     if (!ENV) throw new Error('ENV is empty');
