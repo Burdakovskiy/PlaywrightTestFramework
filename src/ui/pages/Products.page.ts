@@ -84,14 +84,12 @@ export class ProductsPage extends BasePage {
 
       const isLast = ids.length == itemCounter;
 
-      await this.waiter.waitVisible(
-        isLast ? this.cartModal.continueShopping : this.cartModal.viewCart,
-      );
+      await this.waiter.waitVisible(this.cartModal.root);
 
       if (isLast) {
-        await this.safeClick(this.cartModal.viewCart, 'Cart modal: View Cart');
+        await this.safeClick(this.cartModal.viewCart);
       } else {
-        await this.safeClick(this.cartModal.continueShopping, 'Cart modal: Continue Shopping');
+        await this.safeClick(this.cartModal.continueShopping);
         await this.waiter.waitHidden(this.cartModal.root);
       }
     }

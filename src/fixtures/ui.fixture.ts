@@ -42,6 +42,15 @@ export const test = base.extend<Fixtures, WorkerFixtures>({
       return await base.step(name, body);
     };
 
+    await page.route(
+      /googlesyndication|doubleclick|googleadservices|adservice|pagead|gpt|securepubads|adsystem|googleads\//i,
+      async (route) => {
+        try {
+          await route.abort();
+        } catch {}
+      },
+    );
+
     const ctx: TestContext = {
       page,
       config,

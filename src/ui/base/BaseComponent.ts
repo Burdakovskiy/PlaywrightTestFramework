@@ -13,8 +13,12 @@ export abstract class BaseComponent {
 
   protected async open(path: string): Promise<void> {
     this.logger.debug(`Open: ${path}`);
-    await this.page.goto(path);
-    await this.waiter.waitPageReady();
+
+    await this.page.goto(path, {
+      waitUntil: 'domcontentloaded',
+    });
+
+    await this.waiter.waitPageReady('domcontentloaded');
     await this.dismissConsentIfPresent();
   }
 
