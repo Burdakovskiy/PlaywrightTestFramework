@@ -1,62 +1,88 @@
 import { expect } from '@playwright/test';
 import { ApiCallResult } from '../client/ApiClient';
 import {
+  BaseResponse,
+  BrandsListResponse,
   ProductsListResponse,
   SearchProductResponse,
   VerifyLoginResponse,
 } from '../dto/automationExercise.dto';
-
-function expectHttpOk(res: ApiCallResult<any>) {
-  expect(res.ok, `HTTP not ok. status=${res.status}, body=${res.rawText}`).toBeTruthy();
-}
-
-function expectJsonParsed<T>(res: ApiCallResult<T>): asserts res is ApiCallResult<T> & { json: T } {
-  expect(res.json, `No JSON parsed. raw=${res.rawText}`).toBeTruthy();
-}
-
-function expectResponseCodeOk(res: ApiCallResult<{ responseCode?: number | string }>) {
-  const code = (res.json?.responseCode ?? '') as any;
-  expect([200, '200']).toContain(code);
-}
+import {
+  expectOk2xx,
+  expectJsonParsed,
+  expectResponseCode,
+  expectStatus,
+  expectMessageContains,
+} from './http.assertions';
 
 export const ApiAssertions = {
+  //API-1
   productListOk(res: ApiCallResult<ProductsListResponse>) {
-    expectHttpOk(res);
+    expectOk2xx(res);
     expectJsonParsed(res);
-    expectResponseCodeOk(res);
+    expectResponseCode(res, 200);
 
-    expect(Array.isArray(res.json?.products), 'products should be array').toBeTruthy();
-    expect((res.json?.products ?? []).length, 'products should not be empty').toBeGreaterThan(0);
+    expect(Array.isArray(res.json.products), 'products should be array').toBeTruthy();
+    expect((res.json.products ?? []).length, 'products should not be empty').toBeGreaterThan(0);
 
-    const first = (res.json?.products ?? [])[0];
+    const first = (res.json.products ?? [])[0];
     expect(first).toHaveProperty('id');
     expect(first).toHaveProperty('name');
     expect(first).toHaveProperty('price');
     expect(first).toHaveProperty('brand');
   },
 
-  searchProductOk(res: ApiCallResult<SearchProductResponse>, expectedQuery: string) {
-    expectHttpOk(res);
+  //API-2
+  productListPostShould405(res: ApiCallResult<BaseResponse>) {
+    expectStatus(res, 200);
     expectJsonParsed(res);
-    expectResponseCodeOk(res);
+    expectResponseCode(res, 405);
 
-    expect(Array.isArray(res.json?.products), 'products should be array').toBeTruthy();
-
-    const products = res.json?.products ?? [];
-    if (products.length > 0) {
-      const anyMatches = products.some((product) =>
-        String(product.name ?? '')
-          .toLowerCase()
-          .includes(expectedQuery.toLocaleLowerCase()),
-      );
-      expect(anyMatches, 'at least one product should match query').toBeTruthy();
-    }
+    expect(res.json.message).toContain('This request method is not supported');
   },
 
-  verifyLoginHasResponseCode(res: ApiCallResult<VerifyLoginResponse>) {
-    expectHttpOk(res);
+  //API-3
+  brandsListOk(res: ApiCallResult<BrandsListResponse>) {
+    expectOk2xx(res);
     expectJsonParsed(res);
-    expect(res.json?.responseCode, 'responseCode should exist').toBeDefined();
-    expect(res.json?.message, 'message should exist').toBeDefined();
+    expectResponseCode(res, 200);
+
+    expect(Array.isArray(res.json.brands), 'brands should be array').toBeTruthy();
+  },
+
+  //API-4
+  brandsListPutShould405(res: ApiCallResult<BaseResponse>) {
+    expectStatus(res, 200);
+    expectJsonParsed(res);
+    expectResponseCode(res, 405);
+
+    expect(res.json.message).toContain('This request method is not supported');
+  },
+
+  //API-5
+  searchProductOk(res: ApiCallResult<SearchProductResponse>, expectedQuery: string) {
+    expectOk2xx(res);
+    expectJsonParsed(res);
+    expectResponseCode(res, 200);
+
+    expect(Array.isArray(res.json.products), 'Products should be array').toBeTruthy();
+    expect(res.json.products?.length, 'Search should return at least one product').toBeGreaterThan(
+      0,
+    );
+    const anyMatches = res.json.products?.some((product) =>
+      String(product.name ?? '')
+        .toLowerCase()
+        .includes(expectedQuery.toLowerCase()),
+    );
+
+    expect(anyMatches, `At least one product name should contain "${expectedQuery}"`).toBeTruthy();
+  },
+
+  //OTHER
+  verifyLoginHasResponseCode(res: ApiCallResult<VerifyLoginResponse>) {
+    expectOk2xx(res);
+    expectJsonParsed(res);
+    expect(res.json.responseCode, 'responseCode should exist').toBeDefined();
+    expect(res.json.message, 'message should exist').toBeDefined();
   },
 };

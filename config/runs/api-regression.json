@@ -1,0 +1,7 @@
+{
+  "name": "api-regression",
+  "grep": "(@api.*@regression|@regression.*@api)",
+  "workers": 2,
+  "retries": 1,
+  "forbidOnly": true
+}

@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test:stage:ui:smoke": "ENV=stage RUN=ui-smoke playwright test",
-    "test:stage:ui:regression": "ENV=stage RUN=ui-regression playwright test",
-    "test:local:headed": "ENV=local RUN=ui-smoke playwright test --headed",
-    "test:local:debug": "ENV=local RUN=ui-smoke playwright test --debug",
-    "test:all": "playwright test"
+    "test:all": "ENV=local RUN=all playwright test",
+    "test:stage:ui:smoke": "ENV=stage RUN=ui-smoke playwright test --project=ui",
+    "test:stage:ui:regression": "ENV=stage RUN=ui-regression playwright test --project=ui",
+    "test:stage:ui:negative": "ENV=stage RUN=ui-negative playwright test --project=ui",
+    "test:stage:api:smoke": "ENV=stage RUN=api-smoke playwright test --project=api",
+    "test:stage:api:regression": "ENV=stage RUN=api-regression playwright test --project=api",
+    "test:stage:api:negative": "ENV=stage RUN=api-negative playwright test --project=api",
+    "test:local:ui:headed": "ENV=local RUN=ui-smoke playwright test --project=ui --headed",
+    "test:local:ui:debug": "ENV=local RUN=ui-smoke playwright test --project=ui --debug",
+    "test:local:api:debug": "ENV=local RUN=api-smoke playwright test --project=api --debug"
   },
   "keywords": [],
   "author": "",

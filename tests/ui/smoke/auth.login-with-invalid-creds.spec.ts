@@ -6,8 +6,8 @@ import { LoginSignupPage } from '../../../src/ui/pages/LoginSignup.page';
 import { DeleteAccountFlow } from '../../../src/flows/auth/DeleteAccount.flow';
 import { HeaderComponent } from '../../../src/ui/components/Header.component';
 
-test.describe('@negative Login with incorrect email and password', () => {
-  test('@negative Login with incorrect email', async ({ ctx }) => {
+test.describe('@ui @negative @smoke', () => {
+  test('Login with incorrect email', async ({ ctx }) => {
     const header = new HeaderComponent(ctx.page, ctx.config, ctx.waiter, ctx.logger);
     const login = new LoginSignupPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
 
@@ -21,7 +21,7 @@ test.describe('@negative Login with incorrect email and password', () => {
     await header.assertNotLoggedIn();
   });
 
-  test('@negative Login with incorrect password', async ({ ctx }) => {
+  test('Login with incorrect password', async ({ ctx }) => {
     const user = UserDataFactory.createUniqueUser();
 
     await RegisterUserFlow.run(ctx, user);
@@ -39,7 +39,6 @@ test.describe('@negative Login with incorrect email and password', () => {
     await login.assertLoginErrorVisible();
     await header.assertNotLoggedIn();
 
-    //Cleanup
     await login.startLogin(user.email, user.password);
     await header.assertLoggedInAs(user.name);
     await DeleteAccountFlow.run(ctx);

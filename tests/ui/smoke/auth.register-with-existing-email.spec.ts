@@ -8,24 +8,26 @@ import { LoginSignupPage } from '../../../src/ui/pages/LoginSignup.page';
 import { LoginUserFlow } from '../../../src/flows/auth/LoginUser.flow';
 import { HeaderComponent } from '../../../src/ui/components/Header.component';
 
-test('@negative Register user with existing email', async ({ ctx }) => {
-  const user = UserDataFactory.createUniqueUser();
-  const home = new HomePage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
-  const header = new HeaderComponent(ctx.page, ctx.config, ctx.waiter, ctx.logger);
-  const login = new LoginSignupPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
+test.describe('@ui @smoke @negative', () => {
+  test('Register user with existing email', async ({ ctx }) => {
+    const user = UserDataFactory.createUniqueUser();
+    const home = new HomePage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
+    const header = new HeaderComponent(ctx.page, ctx.config, ctx.waiter, ctx.logger);
+    const login = new LoginSignupPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
 
-  await RegisterUserFlow.run(ctx, user);
-  await LogoutFlow.run(ctx);
+    await RegisterUserFlow.run(ctx, user);
+    await LogoutFlow.run(ctx);
 
-  await header.goToHome();
-  await home.assertVisible();
+    await header.goToHome();
+    await home.assertVisible();
 
-  await header.goToSignupLogin();
-  await login.assertNewUserSignupVisible();
+    await header.goToSignupLogin();
+    await login.assertNewUserSignupVisible();
 
-  await login.startSignup(user.name, user.email);
-  await login.assertEmailAddressAlreadyExistVisible();
+    await login.startSignup(user.name, user.email);
+    await login.assertEmailAddressAlreadyExistVisible();
 
-  await LoginUserFlow.run(ctx, user);
-  await DeleteAccountFlow.run(ctx);
+    await LoginUserFlow.run(ctx, user);
+    await DeleteAccountFlow.run(ctx);
+  });
 });

@@ -1,0 +1,7 @@
+{
+  "name": "ui-negative",
+  "grep": "(@ui.*@negative|@negative.*@ui)",
+  "workers": 1,
+  "retries": 0,
+  "forbidOnly": true
+}

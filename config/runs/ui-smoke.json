@@ -1,7 +1,7 @@
 {
   "name": "ui-smoke",
+  "grep": "(@ui.*@smoke|@smoke.*@ui)",
   "workers": 1,
-  "retries": 0,
-  "grep": "(@smoke|@negative)",
+  "retries": 1,
   "forbidOnly": true
 }

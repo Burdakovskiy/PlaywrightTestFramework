@@ -1,0 +1,7 @@
+{
+  "name": "api-smoke",
+  "grep": "(@api.*@smoke|@smoke.*@api)",
+  "workers": 2,
+  "retries": 0,
+  "forbidOnly": true
+}

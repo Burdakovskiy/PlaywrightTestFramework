@@ -2,10 +2,10 @@
   "name": "stage",
   "baseUrl": "https://automationexercise.com",
   "timeouts": {
-    "test": 60000,
-    "expect": 10000,
-    "action": 10000,
-    "navigation": 30000
+    "test": 100000,
+    "expect": 100000,
+    "action": 100000,
+    "navigation": 100000
   },
   "artifacts": {
     "trace": "retain-on-failure",

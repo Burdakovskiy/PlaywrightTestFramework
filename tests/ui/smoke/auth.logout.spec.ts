@@ -6,16 +6,18 @@ import { LogoutFlow } from '../../../src/flows/auth/Logout.flow';
 import { LoginUserFlow } from '../../../src/flows/auth/LoginUser.flow';
 import { LoginSignupPage } from '../../../src/ui/pages/LoginSignup.page';
 
-test('@smoke Logout user', async ({ ctx }) => {
-  const login = new LoginSignupPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
+test.describe('@ui @smoke', () => {
+  test('Logout user', async ({ ctx }) => {
+    const login = new LoginSignupPage(ctx.page, ctx.config, ctx.waiter, ctx.logger);
 
-  const user = UserDataFactory.createUniqueUser();
+    const user = UserDataFactory.createUniqueUser();
 
-  await RegisterUserFlow.run(ctx, user);
-  await LogoutFlow.run(ctx);
+    await RegisterUserFlow.run(ctx, user);
+    await LogoutFlow.run(ctx);
 
-  await login.assertLoginPageVisible();
+    await login.assertLoginPageVisible();
 
-  await LoginUserFlow.run(ctx, user);
-  await DeleteAccountFlow.run(ctx);
+    await LoginUserFlow.run(ctx, user);
+    await DeleteAccountFlow.run(ctx);
+  });
 });

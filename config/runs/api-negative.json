@@ -1,0 +1,7 @@
+{
+  "name": "api-negative",
+  "grep": "(@api.*@negative|@negative.*@api)",
+  "workers": 2,
+  "retries": 0,
+  "forbidOnly": true
+}
