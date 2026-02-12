@@ -26,4 +26,10 @@ export type SearchProductResponse = BaseResponse & {
   products?: Product[];
 };
 
-export type VerifyLoginResponse = BaseResponse & {};
+export type CreateAccountResponse = BaseResponse;
+
+export type DeleteAccountResponse = BaseResponse;
+
+export type UpdateAccountResponse = BaseResponse;
+
+export type VerifyLoginResponse = BaseResponse;

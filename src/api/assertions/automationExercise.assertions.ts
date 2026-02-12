@@ -3,6 +3,8 @@ import { ApiCallResult } from '../client/ApiClient';
 import {
   BaseResponse,
   BrandsListResponse,
+  CreateAccountResponse,
+  DeleteAccountResponse,
   ProductsListResponse,
   SearchProductResponse,
   VerifyLoginResponse,
@@ -37,8 +39,7 @@ export const ApiAssertions = {
     expectStatus(res, 200);
     expectJsonParsed(res);
     expectResponseCode(res, 405);
-
-    expect(res.json.message).toContain('This request method is not supported');
+    expectMessageContains(res, 'This request method is not supported');
   },
 
   //API-3
@@ -55,8 +56,7 @@ export const ApiAssertions = {
     expectStatus(res, 200);
     expectJsonParsed(res);
     expectResponseCode(res, 405);
-
-    expect(res.json.message).toContain('This request method is not supported');
+    expectMessageContains(res, 'This request method is not supported');
   },
 
   //API-5
@@ -76,6 +76,62 @@ export const ApiAssertions = {
     );
 
     expect(anyMatches, `At least one product name should contain "${expectedQuery}"`).toBeTruthy();
+  },
+
+  //API-6
+  searchProductWithoutParamShould400(res: ApiCallResult<BaseResponse>) {
+    expectStatus(res, 200);
+    expectJsonParsed(res);
+    expectResponseCode(res, 400);
+    expectMessageContains(res, 'Bad request, search_product parameter is missing in POST request.');
+  },
+
+  //API-7
+  verifyLoginValidShould200(res: ApiCallResult<VerifyLoginResponse>) {
+    expectStatus(res, 200);
+    expectJsonParsed(res);
+    expectResponseCode(res, 200);
+    expectMessageContains(res, 'User exists');
+  },
+
+  //API-8
+  verifyLoginMissingEmailShould400(res: ApiCallResult<VerifyLoginResponse>) {
+    expectStatus(res, 200);
+    expectJsonParsed(res);
+    expectResponseCode(res, 400);
+    expectMessageContains(res, 'email or password parameter is missing');
+  },
+
+  //API-9
+  verifyLoginDeleteShould405(res: ApiCallResult<BaseResponse>) {
+    expectStatus(res, 200);
+    expectJsonParsed(res);
+    expectResponseCode(res, 405);
+    expectMessageContains(res, 'This request method is not supported.');
+  },
+
+  //API-10
+  verifyLoginInvalidCredsShould404(res: ApiCallResult<BaseResponse>) {
+    expectStatus(res, 200);
+    expectJsonParsed(res);
+    expectResponseCode(res, 404);
+    expectMessageContains(res, 'User not found!');
+  },
+
+  //API-11
+  createAccountShould201(res: ApiCallResult<CreateAccountResponse>) {
+    expectStatus(res, 200);
+    expectJsonParsed(res);
+    expectResponseCode(res, 201);
+    expectMessageContains(res, 'User created!');
+  },
+
+  //API-12
+  deleteAccountShould200(res: ApiCallResult<DeleteAccountResponse>) {
+    expectStatus(res, 200);
+    expectJsonParsed(res);
+    expectResponseCode(res, 200);
+    expectMessageContains(res, 'Account deleted!');
   },
 
   //OTHER
