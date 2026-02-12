@@ -9,9 +9,9 @@ test.describe(`@api @smoke ${AE_ROUTES.verifyLogin}`, () => {
     const created = await aeApi.createAccount(user);
     ApiAssertions.createAccountShould201(created);
 
-    const verified = await aeApi.verifyLogin(user.email, user.password);
-    ApiAssertions.verifyLoginValidShould200(verified);
     try {
+      const verified = await aeApi.verifyLogin(user.email, user.password);
+      ApiAssertions.verifyLoginValidShould200(verified);
     } finally {
       const deleted = await aeApi.deleteAccount(user.email, user.password);
       ApiAssertions.deleteAccountShould200(deleted);

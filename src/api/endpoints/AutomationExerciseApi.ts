@@ -1,5 +1,5 @@
 import { UserEntity } from '../../domain/UserEntity';
-import { mapUserToAccountForm } from '../../utils/mappers/mapUserToAccountForm.mapper';
+import { Mapper } from '../../utils/Mapper';
 import { ApiClient } from '../client/ApiClient';
 import {
   ProductsListResponse,
@@ -10,6 +10,7 @@ import {
   DeleteAccountResponse,
   UpdateAccountResponse,
   BaseResponse,
+  GetUserDetailByEmailResponse,
 } from '../dto/automationExercise.dto';
 import { AE_ROUTES } from '../routes/ae.routes';
 
@@ -63,7 +64,7 @@ export class AutomationExerciseApi {
     return this.client.call<CreateAccountResponse>({
       method: 'POST',
       path: AE_ROUTES.createAccount,
-      form: mapUserToAccountForm(user),
+      form: Mapper.mapUserToAccountForm(user),
     });
   }
 
@@ -83,6 +84,14 @@ export class AutomationExerciseApi {
     });
   }
 
+  updateAccount(user: UserEntity) {
+    return this.client.call<UpdateAccountResponse>({
+      method: 'PUT',
+      path: AE_ROUTES.updateAccount,
+      form: Mapper.mapUserToAccountForm(user),
+    });
+  }
+
   verifyLoginWithoutEmail(password: string) {
     return this.client.call<VerifyLoginResponse>({
       method: 'POST',
@@ -95,6 +104,14 @@ export class AutomationExerciseApi {
     return this.client.call<BaseResponse>({
       method: 'DELETE',
       path: AE_ROUTES.verifyLogin,
+    });
+  }
+
+  getUserDetailByEmail(email: string) {
+    return this.client.call<GetUserDetailByEmailResponse>({
+      method: 'GET',
+      path: AE_ROUTES.getUserDetailByEmail,
+      query: { email },
     });
   }
 }

@@ -6,7 +6,13 @@ import { UserDataFactory } from '../../../src/data/factories/UserData.factory';
 test.describe(`@api @smoke ${AE_ROUTES.createAccount}`, () => {
   test('Create account', async ({ aeApi }) => {
     const user = UserDataFactory.createUniqueUser();
-    const response = await aeApi.createAccount(user);
-    ApiAssertions.createAccountShould201(response);
+
+    try {
+      const response = await aeApi.createAccount(user);
+      ApiAssertions.createAccountShould201(response);
+    } finally {
+      const deleted = await aeApi.deleteAccount(user.email, user.password);
+      ApiAssertions.deleteAccountShould200(deleted);
+    }
   });
 });

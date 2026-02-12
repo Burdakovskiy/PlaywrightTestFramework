@@ -5,8 +5,10 @@ import {
   BrandsListResponse,
   CreateAccountResponse,
   DeleteAccountResponse,
+  GetUserDetailByEmailResponse,
   ProductsListResponse,
   SearchProductResponse,
+  UpdateAccountResponse,
   VerifyLoginResponse,
 } from '../dto/automationExercise.dto';
 import {
@@ -132,6 +134,27 @@ export const ApiAssertions = {
     expectJsonParsed(res);
     expectResponseCode(res, 200);
     expectMessageContains(res, 'Account deleted!');
+  },
+
+  //API-13
+  updateAccountShould200(res: ApiCallResult<UpdateAccountResponse>) {
+    expectStatus(res, 200);
+    expectJsonParsed(res);
+    expectResponseCode(res, 200);
+    expectMessageContains(res, 'User updated');
+  },
+
+  //API-14
+  getUserDetailByEmailShould200(
+    res: ApiCallResult<GetUserDetailByEmailResponse>,
+    expectedEmail: string,
+  ) {
+    expectStatus(res, 200);
+    expectJsonParsed(res);
+    expectResponseCode(res, 200);
+
+    expect(res.json.user, 'user should exist').toBeDefined();
+    expect(String(res.json.user?.email ?? '').toLowerCase()).toBe(expectedEmail.toLowerCase());
   },
 
   //OTHER
