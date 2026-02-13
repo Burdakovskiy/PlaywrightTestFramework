@@ -1,0 +1,7 @@
+{
+  "name": "api-contract",
+  "grep": "(@api.*@contract|@contract.*@api)",
+  "workers": 2,
+  "retries": 0,
+  "forbidOnly": true
+}

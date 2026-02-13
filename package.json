@@ -12,7 +12,9 @@
     "test:stage:api:negative": "ENV=stage RUN=api-negative playwright test --project=api",
     "test:local:ui:headed": "ENV=local RUN=ui-smoke playwright test --project=ui --headed",
     "test:local:ui:debug": "ENV=local RUN=ui-smoke playwright test --project=ui --debug",
-    "test:local:api:debug": "ENV=local RUN=api-smoke playwright test --project=api --debug"
+    "test:local:api:debug": "ENV=local RUN=api-smoke playwright test --project=api --debug",
+    "test:stage:api:contract": "ENV=stage RUN=api-contract playwright test --project=api",
+    "test:local:api:contract": "ENV=local RUN=api-contract playwright test --project=api"
   },
   "keywords": [],
   "author": "",

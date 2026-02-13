@@ -3,7 +3,7 @@ import { ApiAssertions } from '../../../src/api/assertions/ae.assertions';
 import { AE_ROUTES } from '../../../src/api/routes/ae.routes';
 import { UserDataFactory } from '../../../src/data/factories/UserData.factory';
 
-test.describe(`@api @smoke ${AE_ROUTES.verifyLogin}`, () => {
+test.describe(`@api @smoke @contract ${AE_ROUTES.verifyLogin}`, () => {
   test('POST To Verify Login with valid details', async ({ aeApi }) => {
     const user = UserDataFactory.createUniqueUser();
     const created = await aeApi.createAccount(user);

@@ -3,7 +3,7 @@ import { ApiAssertions } from '../../../src/api/assertions/ae.assertions';
 import { AE_ROUTES } from '../../../src/api/routes/ae.routes';
 import { UserDataFactory } from '../../../src/data/factories/UserData.factory';
 
-test.describe(`@api @smoke ${AE_ROUTES.createAccount}`, () => {
+test.describe(`@api @smoke @contract ${AE_ROUTES.createAccount}`, () => {
   test('Create account', async ({ aeApi }) => {
     const user = UserDataFactory.createUniqueUser();
 
