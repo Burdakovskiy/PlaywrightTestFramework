@@ -18,6 +18,7 @@ import {
   expectStatus,
   expectMessageContains,
 } from './http.assertions';
+import { ContractAssertions } from './ae.contract.assertions';
 
 export const ApiAssertions = {
   //API-1
@@ -25,6 +26,8 @@ export const ApiAssertions = {
     expectOk2xx(res);
     expectJsonParsed(res);
     expectResponseCode(res, 200);
+
+    ContractAssertions.productsList(res);
 
     expect(Array.isArray(res.json.products), 'products should be array').toBeTruthy();
     expect((res.json.products ?? []).length, 'products should not be empty').toBeGreaterThan(0);
@@ -41,6 +44,9 @@ export const ApiAssertions = {
     expectStatus(res, 200);
     expectJsonParsed(res);
     expectResponseCode(res, 405);
+
+    ContractAssertions.baseResponse(res, 'API-2 productsList POST 405 baseResponse');
+
     expectMessageContains(res, 'This request method is not supported');
   },
 
@@ -50,6 +56,8 @@ export const ApiAssertions = {
     expectJsonParsed(res);
     expectResponseCode(res, 200);
 
+    ContractAssertions.brandsList(res);
+
     expect(Array.isArray(res.json.brands), 'brands should be array').toBeTruthy();
   },
 
@@ -58,6 +66,9 @@ export const ApiAssertions = {
     expectStatus(res, 200);
     expectJsonParsed(res);
     expectResponseCode(res, 405);
+
+    ContractAssertions.baseResponse(res, 'API-4 brandsList PUT 405 baseResponse');
+
     expectMessageContains(res, 'This request method is not supported');
   },
 
@@ -66,6 +77,8 @@ export const ApiAssertions = {
     expectOk2xx(res);
     expectJsonParsed(res);
     expectResponseCode(res, 200);
+
+    ContractAssertions.searchProduct(res);
 
     expect(Array.isArray(res.json.products), 'Products should be array').toBeTruthy();
     expect(res.json.products?.length, 'Search should return at least one product').toBeGreaterThan(
@@ -85,6 +98,9 @@ export const ApiAssertions = {
     expectStatus(res, 200);
     expectJsonParsed(res);
     expectResponseCode(res, 400);
+
+    ContractAssertions.baseResponse(res, 'API-6 searchProduct missing param baseResponse');
+
     expectMessageContains(res, 'Bad request, search_product parameter is missing in POST request.');
   },
 
@@ -93,6 +109,9 @@ export const ApiAssertions = {
     expectStatus(res, 200);
     expectJsonParsed(res);
     expectResponseCode(res, 200);
+
+    ContractAssertions.verifyLogin(res, 'API-7 verifyLogin valid');
+
     expectMessageContains(res, 'User exists');
   },
 
@@ -101,6 +120,9 @@ export const ApiAssertions = {
     expectStatus(res, 200);
     expectJsonParsed(res);
     expectResponseCode(res, 400);
+
+    ContractAssertions.verifyLogin(res, 'API-8 verifyLogin missing email');
+
     expectMessageContains(res, 'email or password parameter is missing');
   },
 
@@ -109,6 +131,9 @@ export const ApiAssertions = {
     expectStatus(res, 200);
     expectJsonParsed(res);
     expectResponseCode(res, 405);
+
+    ContractAssertions.baseResponse(res, 'API-9 verifyLogin DELETE 405 baseResponse');
+
     expectMessageContains(res, 'This request method is not supported.');
   },
 
@@ -117,6 +142,9 @@ export const ApiAssertions = {
     expectStatus(res, 200);
     expectJsonParsed(res);
     expectResponseCode(res, 404);
+
+    ContractAssertions.baseResponse(res, 'API-10 verifyLogin invalid creds baseResponse');
+
     expectMessageContains(res, 'User not found!');
   },
 
@@ -125,6 +153,9 @@ export const ApiAssertions = {
     expectStatus(res, 200);
     expectJsonParsed(res);
     expectResponseCode(res, 201);
+
+    ContractAssertions.createAccount(res);
+
     expectMessageContains(res, 'User created!');
   },
 
@@ -133,6 +164,9 @@ export const ApiAssertions = {
     expectStatus(res, 200);
     expectJsonParsed(res);
     expectResponseCode(res, 200);
+
+    ContractAssertions.deleteAccount(res);
+
     expectMessageContains(res, 'Account deleted!');
   },
 
@@ -141,6 +175,9 @@ export const ApiAssertions = {
     expectStatus(res, 200);
     expectJsonParsed(res);
     expectResponseCode(res, 200);
+
+    ContractAssertions.updateAccount(res);
+
     expectMessageContains(res, 'User updated');
   },
 
@@ -153,6 +190,8 @@ export const ApiAssertions = {
     expectJsonParsed(res);
     expectResponseCode(res, 200);
 
+    ContractAssertions.getUserDetailByEmail(res);
+
     expect(res.json.user, 'user should exist').toBeDefined();
     expect(String(res.json.user?.email ?? '').toLowerCase()).toBe(expectedEmail.toLowerCase());
   },
@@ -161,6 +200,9 @@ export const ApiAssertions = {
   verifyLoginHasResponseCode(res: ApiCallResult<VerifyLoginResponse>) {
     expectOk2xx(res);
     expectJsonParsed(res);
+
+    ContractAssertions.verifyLogin(res, 'OTHER verifyLogin has responseCode');
+
     expect(res.json.responseCode, 'responseCode should exist').toBeDefined();
     expect(res.json.message, 'message should exist').toBeDefined();
   },

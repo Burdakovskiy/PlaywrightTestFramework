@@ -1,5 +1,5 @@
 import { test } from '../../../src/fixtures/api.fixtures';
-import { ApiAssertions } from '../../../src/api/assertions/automationExercise.assertions';
+import { ApiAssertions } from '../../../src/api/assertions/ae.assertions';
 import { AE_ROUTES } from '../../../src/api/routes/ae.routes';
 
 test.describe(`@api @smoke ${AE_ROUTES.searchProduct}`, () => {
