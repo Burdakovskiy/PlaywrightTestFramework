@@ -1,0 +1,92 @@
+name: Playwright CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+cuncurency:
+  group: playwright-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ui_smoke:
+    name: UI Smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install deps
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run UI smoke (stage profile)
+        run: npm run test:stage:ui:smoke
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-smoke-report
+          path: reports/html
+          if-no-files-found: warn
+          retentions-days: 14
+
+      - name: Upload artifacts (trace/video/screenshots)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-smoke-artifacts
+          path: artifacts/test-output
+          if-no-files-found: warn
+          retentions-days: 14
+
+  api_smoke:
+    name: API Smoke
+    runs-on: ubunu-latest
+    timeout-minutes: 30
+    needs: api_contract
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run API smoke (stage profile)
+        run: npm run test:stage:api:smoke
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifacts@v4
+        with:
+          name: api-smoke-report
+          path: reports/html
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifacts@v4
+        with:
+          name: api-smoke-artifacts
+          path: artifacts/test-output
+          if-no-files-found: warn
+          retention-days: 14
